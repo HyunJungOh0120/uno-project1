@@ -16,41 +16,47 @@
   </head>
   <body>
     <main class="board">
-      <section class="left">
-        <div>
-          <div class="hand pc1Hand">
-            <div class="card">a</div>
-            <div class="card">b</div>
-            <div class="card">b</div>
-            <div class="card">b</div>
-            <div class="card">b</div>
-            <div class="card">b</div>
-            <div class="card">b</div>
-          </div>
+      <section class="side">
+        <div class="hand pc1Hand" id="pc1">
+          <div class="card">a</div>
+          <div class="card">b</div>
+          <div class="card">b</div>
+          <div class="card">b</div>
+          <div class="card">b</div>
+          <div class="card">b</div>
+          <div class="card">e</div>
         </div>
+      </section>
+
+      <section class="middle">
         <div class="piles">
           <div class="draw">
             <button class="draw__btn">DRAW</button>
-            <div class="card draw__card"></div>
+            <div class="draw__cards">
+              <div class="card draw__card">a</div>
+              <div class="card draw__card">b</div>
+              <div class="card draw__card">b</div>
+              <div class="card draw__card">e</div>
+            </div>
           </div>
           <div class="discard">
             <div class="card discard__card">a</div>
           </div>
         </div>
-        <div>
-          <div class="hand userHand">
-            <div class="card userCard">a</div>
-            <div class="card userCard">b</div>
-            <div class="card userCard">b</div>
-            <div class="card userCard">b</div>
-            <div class="card userCard">b</div>
-            <div class="card userCard">b</div>
-            <div class="card userCard">b</div>
-          </div>
+
+        <div class="hand userHand turn" id="user">
+          <div class="card userCard">a</div>
+          <div class="card userCard">b</div>
+          <div class="card userCard">b</div>
+          <div class="card userCard">b</div>
+          <div class="card userCard">b</div>
+          <div class="card userCard">b</div>
+          <div class="card userCard">b</div>
         </div>
       </section>
-      <section class="right">
-        <div class="hand pc2Hand">
+
+      <section class="side">
+        <div class="hand pc2Hand" id="pc2">
           <div class="card">a</div>
           <div class="card">b</div>
           <div class="card">b</div>
