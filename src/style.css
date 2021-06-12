@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+:root {
+  --main-white: rgb(236, 236, 236);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  padding: 2rem;
+  background-color: var(--main-white);
+  font-family: 'Montserrat', sans-serif;
+}
+
+div {
+  display: block;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 0.4rem;
+  text-transform: uppercase;
+  color: var(--main-white);
+}
+button:active {
+  transform: scale(0.9);
+}
+
+/* //////////////////////////////////////////////////////////// */
+/* BOARD  */
+/* //////////////////////////////////////////////////////////// */
+.board {
+  position: relative;
+  max-width: 100rem;
+  background-color: rosybrown;
+  height: 100%;
+  display: flex;
+
+  justify-content: space-between;
+}
+
+.hand {
+  width: 50rem;
+  height: 10rem;
+  background-color: rgb(59, 75, 32);
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: auto;
+  padding: 0 1rem;
+}
+
+.left {
+  background-color: tomato;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 80%;
+}
+
+.piles {
+  display: flex;
+  height: 20rem;
+}
+
+.draw {
+  background-color: darkgrey;
+  width: 20rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.draw__btn {
+  height: 3rem;
+  width: 7rem;
+  margin-bottom: 2rem;
+  background-color: rgb(221, 77, 51);
+  border: rgb(192, 76, 55) 1px solid;
+  box-shadow: 1px 3px 3px rgb(73, 16, 16);
+  font-size: 1rem;
+}
+
+.discard {
+  background-color: darkgoldenrod;
+  width: 38rem;
+  margin-left: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.userHand {
+  width: 60rem;
+  height: 13rem;
+}
+
+.right {
+  width: 20%;
+  background-color: tomato;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.pc2Hand {
+  position: absolute;
+  transform: rotate(270deg);
+  width: 42rem;
+  height: 10rem;
+}
+/* //////////////////////////////////////////////////////////// */
+/* CARD  */
+/* //////////////////////////////////////////////////////////// */
+.card {
+  width: 5rem;
+  height: 7rem;
+  background-color: var(--main-white);
+  border: 1px solid black;
+}
+
+.draw__card {
+  width: 8rem;
+  height: 12rem;
+}
+
+.userCard {
+  width: 8rem;
+  height: 12rem;
+}
+
+.discard__card {
+  width: 12rem;
+  height: 17rem;
+}
