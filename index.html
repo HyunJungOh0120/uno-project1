@@ -16,6 +16,45 @@
   </head>
   <body>
     <button class="reset__btn">RESET</button>
+    <div class="choose__page">
+      <button class="draw__btn chooseTurn__btn">PICK A CARD</button>
+      <div>
+        <div class="choose__player">
+          <p>USER</p>
+          <div class="chooseBox choose__user--card">
+            <!-- <div class="card discard__card">
+              <p class="card__value card__value--top">5</p>
+              <div class="card__circle"></div>
+              <p class="card__value card__value--main">5</p>
+              <p class="card__value card__value--bottom">5</p>
+            </div> -->
+          </div>
+        </div>
+        <div class="choose__player">
+          <p>PC1</p>
+          <div class="chooseBox choose__pc1--card">
+            <!-- <div class="card discard__card">
+              <p class="card__value card__value--top">5</p>
+              <div class="card__circle"></div>
+              <p class="card__value card__value--main">5</p>
+              <p class="card__value card__value--bottom">5</p>
+            </div> -->
+          </div>
+        </div>
+        <div class="choose__player">
+          <p>PC2</p>
+          <div class="chooseBox choose__pc2--card">
+            <!-- <div class="card discard__card">
+              <p class="card__value card__value--top">5</p>
+              <div class="card__circle"></div>
+              <p class="card__value card__value--main">5</p>
+              <p class="card__value card__value--bottom">5</p>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
     <main class="board">
       <section class="side">
         <div class="hand pc1Hand" id="pc1">
@@ -27,8 +66,7 @@
 
       <section class="middle">
         <div class="piles">
-          <div class="draw">
-            <button class="draw__btn chooseTurn__btn">PICK A CARD</button>
+          <div class="pile draw">
             <button class="draw__btn transparent">DRAW</button>
             <div class="draw__cards">
               <!-- <div class="card draw__card">a</div>
@@ -38,7 +76,7 @@
             </div>
             <p class="draw__remain-num">0</p>
           </div>
-          <div class="discard">
+          <div class="pile discard">
             <!-- <div class="card discard__card">
               <p class="card__value card__value--top">5</p>
               <div class="card__circle"></div>

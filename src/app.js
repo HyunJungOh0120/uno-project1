@@ -1,7 +1,7 @@
 'use strict';
 
 const cardInfo = {
-  value: [
+  face: [
     0,
     1,
     2,
@@ -28,14 +28,16 @@ const cardInfo = {
 const create1Set = () => {
   const set = cardInfo.color.map((color) => {
     const cards = [];
-    cardInfo.value.forEach((val) => {
+    let value = 0;
+    cardInfo.face.forEach((face) => {
       const card = {
         color: color,
         faceUp: false,
-        value: val,
-        face: val,
+        value: value,
+        face: face,
         color: color,
       };
+      value++;
       cards.push(card);
     });
     return cards;
@@ -52,8 +54,10 @@ const createDeck = () => {
       row.splice(-2, 1);
       return row;
     }); // Remove wild and blank 0 cards.
+
   set1.forEach((row) => row.forEach((card) => deck.push(card)));
   set2.forEach((row) => row.forEach((card) => deck.push(card)));
+
   // Total 108 cards
   return deck;
 };
@@ -87,7 +91,7 @@ const board = {
 /////////////////////////////////////////////////////////////////////////////////////////////
 //// * GAME
 /////////////////////////////////////////////////////////////////////////////////////////////
-const randomNum = (limit) => Math.floor(Math.random() * limit);
+const getRandomNum = (limit) => Math.floor(Math.random() * limit);
 
 const getNextIndex = () => {
   const nextIndex =
@@ -108,12 +112,29 @@ const changePlayer = () => {
 };
 
 const chooseTurn = () => {
-  randomNum();
+  const checkingArray = [];
+  const userRandom = board.deck[getRandomNum(board.deck.length)];
+  const pc1Random = board.deck[getRandomNum(board.deck.length)];
+  const pc2Random = board.deck[getRandomNum(board.deck.length)];
+
+  checkingArray.push(userRandom);
+  checkingArray.push(pc1Random);
+  checkingArray.push(pc2Random);
+
+  const highest = checkingArray.sort()[0];
+
+  // how to render?
+  console.log(userRandom);
+  console.log(pc1Random);
+  console.log(pc2Random);
+  console.log(highest);
 };
 
+chooseTurn();
 /////////////////////////////////////////////////////////////////////////////////////////////
 //// * MAIN
 /////////////////////////////////////////////////////////////////////////////////////////////
+//console.log(board.deck);
 
 const main = () => {
   $('.chooseTurn__btn').on('click', chooseTurn);
