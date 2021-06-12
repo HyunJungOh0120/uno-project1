@@ -209,8 +209,16 @@ const renderHand = (player) => {
   if (player === 'user') $('.userHand .card').addClass('userCard');
 };
 
+const renderDrawPile = () => {
+  const template = board.drawPile.map((card) => getPcCardTemplate()).join(' ');
+
+  $('.draw__cards').html(template);
+  $('.draw__cards .card').addClass('draw__card');
+  $('.draw__remain-num').text(board.drawPile.length);
+};
+
 /////////////////////////////////////////////////////////////////
-// * GAME START 🦊
+// * GAME FUNCTIONS 🦊
 /////////////////////////////////////////////////////////////////
 const shuffleDeck = () => {
   for (let i = 0; i < board.deck.length; i++) {
@@ -235,13 +243,28 @@ const deal7CardsToEachPlayers = () => {
   });
 };
 
+const remainingCardsToDrawPile = () => {
+  // board deck is empty. Move all cards to draw pile
+  board.drawPile = board.deck.splice(0);
+
+  //! 🎨 render
+  renderDrawPile();
+};
+
+/////////////////////////////////////////////////////////////////
+// * GAME START!! 🦊
+/////////////////////////////////////////////////////////////////
+
 const startGame = () => {
   console.log('game start!');
   getCurrIndex();
 
+  //? Doing all jobs related to Board deck! Cards!
   shuffleDeck();
 
   deal7CardsToEachPlayers();
+
+  remainingCardsToDrawPile();
 };
 
 /////////////////////////////////////////////////////////////////
