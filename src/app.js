@@ -25,26 +25,6 @@ const cardInfo = {
   blue: 'rgb(0,35,230)',
 };
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-//// * GAME STATUS
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-const game = {
-  players: ['user', 'pc1', 'pc2'],
-  currPlayer: null,
-  currIndex: null,
-  nextIndex: null,
-  currCard: null,
-  currColor: null,
-  currValue: null,
-};
-
-const playerHands = {
-  userHand: [],
-  pc1Hand: [],
-  pc2Hand: [],
-};
-
 const create1Set = () => {
   const set = cardInfo.color.map((color) => {
     const cards = [];
@@ -78,7 +58,31 @@ const createDeck = () => {
   return deck;
 };
 
-const deck = createDeck();
+/////////////////////////////////////////////////////////////////////////////////////////////
+//// * GAME STATUS
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+const game = {
+  players: ['user', 'pc1', 'pc2'],
+  currPlayer: null,
+  currIndex: null,
+  nextIndex: null,
+  currCard: null,
+  currColor: null,
+  currValue: null,
+};
+
+const playerHands = {
+  userHand: [],
+  pc1Hand: [],
+  pc2Hand: [],
+};
+
+const board = {
+  deck: createDeck(),
+  drawPile: [],
+  discardPile: [],
+};
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //// * GAME
