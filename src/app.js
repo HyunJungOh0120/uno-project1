@@ -1,9 +1,16 @@
 'use strict';
 
 const specialCards = {
-  skip: '<i class="far fa-times-circle"></i>',
-  reverse: '<i class="fas fa-exchange-alt"></i>',
-  draw2: '<i class="fas fa-plus"></i>2',
+  skip: `<i class="far fa-times-circle fa-xs"></i>`,
+  reverse: `<i class="fas fa-exchange-alt fa-xs"></i>`,
+  draw2: `<i class="fas fa-plus fa-xs"></i>2`,
+};
+
+const colors = {
+  red: 'rgb(230,0,0)',
+  yellow: 'rgb(255,208,0)',
+  green: 'rgb(7,170,56)',
+  blue: 'rgb(0,35,230)',
 };
 
 const cardInfo = {
@@ -24,11 +31,7 @@ const cardInfo = {
     'wild',
     'wildDraw4',
   ],
-  color: ['red', 'yellow', 'green', 'blue'],
-  red: 'rgb(230,0,0)',
-  yellow: 'rgb(255,255,91)',
-  green: 'rgb(7,170,56)',
-  blue: 'rgb(0,35,230)',
+  color: [colors.red, colors.yellow, colors.green, colors.blue],
 };
 
 const create1Set = () => {
@@ -118,10 +121,11 @@ const changePlayer = () => {
 };
 
 const getCardTemplate = (card) => {
+  console.log(card);
   let template = '';
-  if (card.face !== 'wild' || card.face !== 'wildDraw4') {
+  if (card.face !== 'wild' && card.face !== 'wildDraw4') {
     template = `
-      <div class="card">
+      <div class="card" style="background-color: ${card.color}">
           <p class="card__value card__value--top">${card.face}</p>
           <div class="card__circle"></div>
           <p class="card__value card__value--main">${card.face}</p>
@@ -129,16 +133,16 @@ const getCardTemplate = (card) => {
       </div>`;
   } else if (card.face === 'wild') {
     template = `
-      <div class="card">
+      <div class="card" style="background-color: ${card.color}">
       <p class="card__value card__value--top">
         <i class="fas fa-border-all"></i>
       </p>
       <div class="card__circle"></div>
       <div class="wild">
-        <div style="background-color: rgb(230, 0, 0)"></div>
-        <div style="background-color: rgb(255, 221, 27)"></div>
-        <div style="background-color: rgb(7, 170, 56)"></div>
-        <div style="background-color: rgb(41, 66, 207)"></div>
+        <div style="background-color: ${colors.red}"></div>
+        <div style="background-color:${colors.yellow}"></div>
+        <div style="background-color: ${colors.green}"></div>
+        <div style="background-color: ${colors.blue}"></div>
       </div>
       <p class="card__value card__value--bottom">
         <i class="fas fa-border-all"></i>
@@ -147,16 +151,16 @@ const getCardTemplate = (card) => {
         `;
   } else if (card.face === 'wildDraw4') {
     template = `
-      <div class="card">
+      <div class="card" style="background-color: ${card.color}">
       <p class="card__value card__value--top">
         <i class="fas fa-plus"></i>4
       </p>
       <div class="card__circle"></div>
       <div class="wild">
-        <div style="background-color: rgb(230, 0, 0)"></div>
-        <div style="background-color: rgb(255, 221, 27)"></div>
-        <div style="background-color: rgb(7, 170, 56)"></div>
-        <div style="background-color: rgb(41, 66, 207)"></div>
+        <div style="background-color: ${colors.red}"></div>
+        <div style="background-color: ${colors.yellow}"></div>
+        <div style="background-color: ${colors.green}"></div>
+        <div style="background-color: ${colors.blue}"></div>
       </div>
       <p class="card__value card__value--bottom">
         <i class="fas fa-plus"></i>4
@@ -168,24 +172,44 @@ const getCardTemplate = (card) => {
   return template;
 };
 
-const chooseTurn = () => {
-  const checkingArray = [];
-  const user = board.deck[getRandomNum(board.deck.length)];
-  const pc1 = board.deck[getRandomNum(board.deck.length)];
-  const pc2 = board.deck[getRandomNum(board.deck.length)];
-
-  checkingArray.push(user);
-  checkingArray.push(pc1);
-  checkingArray.push(pc2);
-
-  const highest = checkingArray.sort()[0];
-
-  // how to render?  discard__card  class
-
-  console.log('highest', highest);
+const renderChooseTurn = (card) => {
+  // render to $(`.choose__user--card`)
+  const template = getCardTemplate(card);
+  $(`.choose__${card.player}--card`).html(template);
 };
 
-chooseTurn();
+const chooseTurn = (e) => {
+  const userRandomCard = board.deck[getRandomNum(board.deck.length)];
+  const pc1RandomCard = board.deck[getRandomNum(board.deck.length)];
+  const pc2RandomCard = board.deck[getRandomNum(board.deck.length)];
+
+  userRandomCard.player = 'user';
+  pc1RandomCard.player = 'pc1';
+  pc2RandomCard.player = 'pc2';
+
+  const randomCards = [userRandomCard, pc1RandomCard, pc2RandomCard];
+  const highest = randomCards.sort((a, b) => b.value - a.value)[0];
+
+  //! 🎨 render
+  randomCards.forEach((card) => {
+    renderChooseTurn(card);
+    $('.card').addClass('discard__card');
+  });
+  //! Remove btn
+  $(e.target).addClass('none');
+  $('.choose__msg').removeClass('none')
+    .text(`${highest.player} has the highest value card!  
+  ${highest.player} will be the starter!`);
+
+  //! Update the game status.
+  game.currPlayer = highest.player;
+
+  //! GAME START!!
+  setTimeout(() => {
+    $('.choose__page').addClass('none');
+    startGame();
+  }, 2000);
+};
 
 /////////////////////////////////////////////////////////////////
 // * MAIN
