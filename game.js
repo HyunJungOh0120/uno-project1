@@ -113,7 +113,7 @@ getNextIndex = ()=> {
 
 
 
-6. remaining card to draw pile
+6. remaining card to draw pile ✅
   lets say card was in board => move whole thing to draw pile
   manipulate ? or just copy?
 
@@ -121,9 +121,12 @@ getNextIndex = ()=> {
 
   drawPile =  [...deck]  or deck.splice(all)
 
+
+
 -----------------------------------------------------------------game start---
 
 7. gamestart shows up -> if gamestartbtn clicked, gamestartbtn disappear.
+  => TODO maybe animation? game start! sentence fly fast
 
   < 2 seconds later >
 

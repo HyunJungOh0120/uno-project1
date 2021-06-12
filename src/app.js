@@ -140,7 +140,7 @@ const getCardTemplate = (card) => {
     template = `
       <div class="card" style="background-color: ${card.color}">
       <p class="card__value card__value--top">
-        <i class="fas fa-border-all"></i>
+        
       </p>
       <div class="card__circle"></div>
       <div class="wild">
@@ -150,7 +150,7 @@ const getCardTemplate = (card) => {
         <div style="background-color: ${colors.blue}"></div>
       </div>
       <p class="card__value card__value--bottom">
-        <i class="fas fa-border-all"></i>
+        
       </p>
     </div>
         `;
