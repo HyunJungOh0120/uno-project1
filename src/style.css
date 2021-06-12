@@ -66,7 +66,7 @@ button:active {
   justify-content: center;
   align-items: center;
 }
-.choose__page > div {
+.choose__container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -226,6 +226,17 @@ button:active {
   bottom: 0;
 }
 
+.wild {
+  display: block;
+  height: 47%;
+  width: 47%;
+  background-color: black;
+  color: black;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
 .card__value--top {
   position: absolute;
   top: 0;
@@ -236,6 +247,7 @@ button:active {
   font-size: 5em;
   color: black;
   z-index: 1;
+  font-style: italic;
 }
 
 .card__value--bottom {
@@ -276,6 +288,7 @@ button:active {
 .discard__card .card__value--main {
   font-size: 7rem;
 }
+
 /* ////////////////////////////////////////////// */
 /*  * BUTTON */
 /* ////////////////////////////////////////////// */

@@ -11,35 +11,24 @@
       crossorigin="anonymous"
     ></script>
     <script src="src/app.js"></script>
-
+    <script
+      src="https://kit.fontawesome.com/f5ac9989c4.js"
+      crossorigin="anonymous"
+    ></script>
     <link rel="stylesheet" href="src/style.css" />
   </head>
   <body>
     <button class="reset__btn">RESET</button>
     <div class="choose__page">
       <button class="draw__btn chooseTurn__btn">PICK A CARD</button>
-      <div>
+      <div class="choose__container">
         <div class="choose__player">
           <p>USER</p>
-          <div class="chooseBox choose__user--card">
-            <!-- <div class="card discard__card">
-              <p class="card__value card__value--top">5</p>
-              <div class="card__circle"></div>
-              <p class="card__value card__value--main">5</p>
-              <p class="card__value card__value--bottom">5</p>
-            </div> -->
-          </div>
+          <div class="chooseBox choose__user--card"></div>
         </div>
         <div class="choose__player">
           <p>PC1</p>
-          <div class="chooseBox choose__pc1--card">
-            <!-- <div class="card discard__card">
-              <p class="card__value card__value--top">5</p>
-              <div class="card__circle"></div>
-              <p class="card__value card__value--main">5</p>
-              <p class="card__value card__value--bottom">5</p>
-            </div> -->
-          </div>
+          <div class="chooseBox choose__pc1--card"></div>
         </div>
         <div class="choose__player">
           <p>PC2</p>
@@ -106,3 +95,37 @@
     </main>
   </body>
 </html>
+
+<!--wild card template-->
+<!-- <div class="card discard__card">
+  <p class="card__value card__value--top">
+    <i class="fas fa-border-all"></i>
+  </p>
+  <div class="card__circle"></div>
+  <div class="wild">
+    <div style="background-color: rgb(230, 0, 0)"></div>
+    <div style="background-color: rgb(255, 221, 27)"></div>
+    <div style="background-color: rgb(7, 170, 56)"></div>
+    <div style="background-color: rgb(41, 66, 207)"></div>
+  </div>
+  <p class="card__value card__value--bottom">
+    <i class="fas fa-border-all"></i>
+  </p>
+</div> -->
+
+<!--wild card template-->
+<!-- <div class="card discard__card">
+  <p class="card__value card__value--top">
+    <i class="fas fa-plus"></i>4
+  </p>
+  <div class="card__circle"></div>
+  <div class="wild">
+    <div style="background-color: rgb(230, 0, 0)"></div>
+    <div style="background-color: rgb(255, 221, 27)"></div>
+    <div style="background-color: rgb(7, 170, 56)"></div>
+    <div style="background-color: rgb(41, 66, 207)"></div>
+  </div>
+  <p class="card__value card__value--bottom">
+    <i class="fas fa-plus"></i>4
+  </p>
+</div> -->
