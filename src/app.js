@@ -71,13 +71,13 @@ const createDeck = () => {
   return deck;
 };
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-//// * GAME STATUS
-/////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+//// * GAME STATUS 🐸
+//////////////////////////////////////////////////////
 
 const game = {
   players: ['user', 'pc1', 'pc2'],
-  currPlayer: null,
+  currPlayer: 'pc1',
   currIndex: null,
   nextIndex: null,
   currCard: null,
@@ -98,10 +98,12 @@ const board = {
 };
 
 ///////////////////////////////////////////////////////////////
-// * GAME
+// * GAME 🦄
 ///////////////////////////////////////////////////////////////
 const getRandomNum = (limit) => Math.floor(Math.random() * limit);
-
+const getCurrIndex = () => {
+  game.currIndex = game.players.indexOf(game.currPlayer);
+};
 const getNextIndex = () => {
   const nextIndex =
     game.currIndex === game.players.length - 1 ? 0 : game.currIndex + 1;
@@ -120,8 +122,11 @@ const changePlayer = () => {
   game.nextIndex = game.getNextIndex();
 };
 
+/////////////////////////////////////////////////////////////////
+// * CREATE TEMPLATES 🐰
+/////////////////////////////////////////////////////////////////
+// MUST ADD CLASS IF NEEDED
 const getCardTemplate = (card) => {
-  console.log(card);
   let template = '';
   if (card.face !== 'wild' && card.face !== 'wildDraw4') {
     template = `
@@ -172,6 +177,35 @@ const getCardTemplate = (card) => {
   return template;
 };
 
+/////////////////////////////////////////////////////////////////
+// * GAME START 🦊
+/////////////////////////////////////////////////////////////////
+const shuffleDeck = () => {
+  for (let i = 0; i < board.deck.length; i++) {
+    const randomIndex = getRandomNum(board.deck.length);
+    [board.deck[i], board.deck[randomIndex]] = [
+      board.deck[randomIndex],
+      board.deck[i],
+    ];
+  }
+  console.log(board.deck);
+};
+
+const deal7CardsToEachPlayers = () => {};
+
+const startGame = () => {
+  console.log('game start!');
+  getCurrIndex();
+
+  shuffleDeck();
+
+  deal7CardsToEachPlayers();
+};
+
+/////////////////////////////////////////////////////////////////
+// * CHOOSE TURN 🍻
+/////////////////////////////////////////////////////////////////
+
 const renderChooseTurn = (card) => {
   // render to $(`.choose__user--card`)
   const template = getCardTemplate(card);
@@ -193,7 +227,7 @@ const chooseTurn = (e) => {
   //! 🎨 render
   randomCards.forEach((card) => {
     renderChooseTurn(card);
-    $('.card').addClass('discard__card');
+    $('.chooseBox .card').addClass('discard__card');
   });
   //! Remove btn
   $(e.target).addClass('none');
@@ -214,11 +248,10 @@ const chooseTurn = (e) => {
 /////////////////////////////////////////////////////////////////
 // * MAIN
 /////////////////////////////////////////////////////////////////
-//console.log(board.deck);
-console.log(game);
 
 const main = () => {
   $('.chooseTurn__btn').on('click', chooseTurn);
+  startGame();
 };
 
 $(main);

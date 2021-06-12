@@ -65,7 +65,7 @@ getNextIndex = ()=> {
 ! How to connect each player's hand and player?
 
 
-1. Create board with 108 cards
+1. Create board with 108 cards ✅
 
   value  | 0~9, "skip", "reverse", "draw2", 'wild', 'wildDraw4'
   suit   | 1 - 8
@@ -77,16 +77,17 @@ getNextIndex = ()=> {
   
   it's a deck
 
-2. shuffle
+2. shuffle ✅
   forloop shuffle
   
   
 
-3. each player draws a card
+3. each player draws a card ✅
   checkingArray = []  
   deck. shift() - user 
   deck. shift() -pc1 
   deck. shift() - pc2
+  ! changed to choose cards random
 
   select the highest number  -> highest number will be currPlayer
 
@@ -94,7 +95,7 @@ getNextIndex = ()=> {
 
 4. put it back to board and shuffle again
   for card in checkingArry . push to main board
-  shuffle card
+  shuffle card ✅
 
 
 5. deal 7 cards each to player
