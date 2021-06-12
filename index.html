@@ -15,16 +15,13 @@
     <link rel="stylesheet" href="src/style.css" />
   </head>
   <body>
+    <button class="reset__btn">RESET</button>
     <main class="board">
       <section class="side">
         <div class="hand pc1Hand" id="pc1">
-          <div class="card">a</div>
-          <div class="card">b</div>
-          <div class="card">b</div>
-          <div class="card">b</div>
-          <div class="card">b</div>
-          <div class="card">b</div>
-          <div class="card">e</div>
+          <div class="card">
+            <div class="card__circle faceDown"></div>
+          </div>
         </div>
       </section>
 
@@ -36,34 +33,35 @@
               <div class="card draw__card">a</div>
               <div class="card draw__card">b</div>
               <div class="card draw__card">b</div>
-              <div class="card draw__card">e</div>
+              <div class="card draw__card"></div>
             </div>
+            <p class="draw__remain-num">0</p>
           </div>
           <div class="discard">
-            <div class="card discard__card">a</div>
+            <div class="card discard__card">
+              <p class="card__value card__value--top">5</p>
+              <div class="card__circle"></div>
+              <p class="card__value card__value--main">5</p>
+              <p class="card__value card__value--bottom">5</p>
+            </div>
           </div>
         </div>
 
         <div class="hand userHand turn" id="user">
-          <div class="card userCard">a</div>
-          <div class="card userCard">b</div>
-          <div class="card userCard">b</div>
-          <div class="card userCard">b</div>
-          <div class="card userCard">b</div>
-          <div class="card userCard">b</div>
-          <div class="card userCard">b</div>
+          <div class="card userCard">
+            <p class="card__value card__value--top">5</p>
+            <div class="card__circle"></div>
+            <p class="card__value card__value--main">5</p>
+            <p class="card__value card__value--bottom">5</p>
+          </div>
         </div>
       </section>
 
       <section class="side">
         <div class="hand pc2Hand" id="pc2">
-          <div class="card">a</div>
-          <div class="card">b</div>
-          <div class="card">b</div>
-          <div class="card">b</div>
-          <div class="card">b</div>
-          <div class="card">b</div>
-          <div class="card">b</div>
+          <div class="card">
+            <div class="card__circle faceDown"></div>
+          </div>
         </div>
       </section>
     </main>

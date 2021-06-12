@@ -2,9 +2,17 @@
 
 :root {
   --main-white: rgb(236, 236, 236);
-  --board-color: rgb(102, 71, 13);
+  --board-color: rgb(180, 180, 180);
   --hand-color: rgb(59, 75, 32);
-  --turn-shadow: 1px 2px 20px 20px rgb(255, 238, 181);
+  --turn-shadow: 1px 2px 6px 20px rgb(255, 238, 181);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --board-shadow: 0 2px 1px 2px rgba(139, 115, 115, 0.9);
+  --discard--color: rgb(59, 38, 38);
+  --font-color: rgb(211, 211, 211);
+  --red: rgb(230, 0, 0);
+  --yellow: rgb(255, 225, 91);
+  --green: rgb(7, 170, 56);
+  --blue: rgb(0, 35, 230);
 }
 
 * {
@@ -15,6 +23,7 @@
 
 body {
   height: 100vh;
+
   padding: 2rem;
   background-color: var(--main-white);
   font-family: 'Montserrat', sans-serif;
@@ -43,9 +52,12 @@ button:active {
   background-color: var(--board-color);
   height: 100%;
   padding: 1rem;
-  margin: 0 auto;
+
   display: flex;
   justify-content: space-between;
+  border-radius: 1rem;
+  box-shadow: var(--board-shadow);
+  overflow-x: hidden;
 }
 
 .side {
@@ -59,31 +71,25 @@ button:active {
 .middle {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 0.3rem;
+  width: 85%;
 }
 
 .piles {
   display: flex;
-  height: 20rem;
+  height: 25rem;
+  background-color: var(--discard--color);
+  width: 90%;
 }
 
 .draw {
-  background-color: darkgrey;
-  width: 20rem;
+  width: 40%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.draw__btn {
-  height: 3rem;
-  width: 7rem;
-  margin-bottom: 2rem;
-  background-color: rgb(221, 77, 51);
-  border: rgb(192, 76, 55) 1px solid;
-  box-shadow: 1px 3px 3px rgb(73, 16, 16);
-  font-size: 1rem;
 }
 
 .draw__cards {
@@ -95,9 +101,13 @@ button:active {
   justify-content: center;
 }
 
+.draw__remain-num {
+  color: var(--font-color);
+  margin-top: 0.2rem;
+}
+
 .discard {
-  background-color: darkgoldenrod;
-  width: 38rem;
+  width: 60%;
   margin-left: 2rem;
   display: flex;
   justify-content: center;
@@ -109,8 +119,8 @@ button:active {
 /* //////////////////////////////////////////////////////////// */
 
 .hand {
-  width: 42rem;
-  height: 10rem;
+  width: 41.5rem;
+  height: 9rem;
   background-color: var(--hand-color);
 
   display: flex;
@@ -118,17 +128,18 @@ button:active {
   align-items: center;
   overflow-x: auto;
   padding: 0 1rem;
-
-  box-shadow: 0.1rem 0.4rem 0.1rem rgb(92, 58, 58);
+  border-radius: 0.4rem;
+  box-shadow: 1px 1px 1px 1px rgb(92, 58, 58);
 }
 
 .userHand {
-  width: 60rem;
-  height: 13rem;
+  width: 55rem;
+  height: 15rem;
 }
 
 .pc1Hand {
   position: absolute;
+  /* left: 0rem; */
   transform: rotate(90deg);
 }
 
@@ -139,27 +150,77 @@ button:active {
 /* //////////////////////////////////////////////////////////// */
 /* * CARD  */
 /* //////////////////////////////////////////////////////////// */
+/* card   background-color */
+/* card__value--main  color   background-color */
 .card {
-  width: 5.7rem;
-  height: 8rem;
-  background-color: var(--main-white);
+  width: 5rem;
+  height: 7rem;
 
-  border-radius: 0.13rem;
+  color: var(--main-white);
+  background-color: rgb(24, 24, 24);
+  border: 0.3rem solid rgb(255, 255, 255);
+  font-size: 1rem;
+
+  border-radius: 0.6rem;
   margin-right: 0.6rem;
-  box-shadow: 0.3rem 0.3rem 0.2rem rgba(34, 34, 34, 0.815);
-  flex-wrap: nowrap;
+  box-shadow: var(--card-shadow);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.card__circle {
+  background-color: white;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  position: absolute;
+  transform: skew(-30deg);
+  top: 0rem;
+  bottom: 0;
+}
+
+.card__value--top {
+  position: absolute;
+  top: 0;
+  left: 0.2rem;
+}
+
+.card__value--main {
+  font-size: 5em;
+  color: black;
+  z-index: 1;
+}
+
+.card__value--bottom {
+  position: absolute;
+  bottom: 0rem;
+  right: 0.2rem;
+  transform: rotate(180deg);
 }
 
 .draw__card {
   width: 8rem;
   height: 12rem;
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .userCard {
   width: 8rem;
-  height: 12rem;
+  height: 11rem;
   cursor: pointer;
+  transition: all 0.4s;
+}
+
+.userCard:hover {
+  transform: translateY(-1rem);
 }
 
 .discard__card {
@@ -167,9 +228,38 @@ button:active {
   height: 17rem;
 }
 
+.discard__card .card__value {
+  font-size: 2rem;
+}
+.discard__card .card__value--main {
+  font-size: 7rem;
+}
 /* ////////////////////////////////////////////// */
-/*  EXTRA */
+/*  * BUTTON */
 /* ////////////////////////////////////////////// */
+.draw__btn {
+  height: 3rem;
+  width: 7rem;
+  margin-bottom: 2rem;
+  background-color: rgb(221, 77, 51);
+  border: none;
+  box-shadow: 1px 3px 3px rgb(73, 16, 16);
+  font-size: 1rem;
+}
+
+.reset__btn {
+  color: grey;
+  background-color: black;
+  padding: 1rem;
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  top: 0;
+}
+/* ////////////////////////////////////////////// */
+/*  * EXTRA */
+/* ////////////////////////////////////////////// */
+
 .transparent {
   opacity: 0;
 }
@@ -180,4 +270,10 @@ button:active {
 
 .turn {
   box-shadow: var(--turn-shadow);
+  border: 10px solid var(--yellow);
+}
+
+.faceDown {
+  background-color: darkred;
+  border: 2px solid rgb(255, 255, 148);
 }
