@@ -11,7 +11,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="src/app.js"></script>
-    <script src="game.js"></script>
+
     <link rel="stylesheet" href="src/style.css" />
   </head>
   <body>
@@ -19,48 +19,49 @@
     <main class="board">
       <section class="side">
         <div class="hand pc1Hand" id="pc1">
-          <div class="card">
+          <!-- <div class="card">
             <div class="card__circle faceDown"></div>
-          </div>
+          </div> -->
         </div>
       </section>
 
       <section class="middle">
         <div class="piles">
           <div class="draw">
-            <button class="draw__btn">DRAW</button>
+            <button class="draw__btn chooseTurn__btn">PICK A CARD</button>
+            <button class="draw__btn transparent">DRAW</button>
             <div class="draw__cards">
-              <div class="card draw__card">a</div>
+              <!-- <div class="card draw__card">a</div>
               <div class="card draw__card">b</div>
               <div class="card draw__card">b</div>
-              <div class="card draw__card"></div>
+              <div class="card draw__card"></div> -->
             </div>
             <p class="draw__remain-num">0</p>
           </div>
           <div class="discard">
-            <div class="card discard__card">
+            <!-- <div class="card discard__card">
               <p class="card__value card__value--top">5</p>
               <div class="card__circle"></div>
               <p class="card__value card__value--main">5</p>
               <p class="card__value card__value--bottom">5</p>
-            </div>
+            </div> -->
           </div>
         </div>
 
         <div class="hand userHand turn" id="user">
-          <div class="card userCard">
+          <!-- <div class="card userCard">
             <p class="card__value card__value--top">5</p>
             <div class="card__circle"></div>
             <p class="card__value card__value--main">5</p>
             <p class="card__value card__value--bottom">5</p>
-          </div>
+          </div> -->
         </div>
       </section>
 
       <section class="side">
         <div class="hand pc2Hand" id="pc2">
           <div class="card">
-            <div class="card__circle faceDown"></div>
+            <!-- <div class="card__circle faceDown"></div> -->
           </div>
         </div>
       </section>

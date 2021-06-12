@@ -62,12 +62,9 @@ getNextIndex = ()=> {
 
 
 
-*/
+! How to connect each player's hand and player?
 
-//! How to connect each player's hand and player?
 
-//!
-/* 
 1. Create board with 108 cards
 
   value  | 0~9, "skip", "reverse", "draw2", 'wild', 'wildDraw4'
