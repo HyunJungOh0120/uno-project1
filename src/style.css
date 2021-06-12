@@ -251,7 +251,7 @@ button:active {
 }
 
 .card__value--main {
-  font-size: 5em;
+  font-size: 3em;
   color: black;
   z-index: 1;
   font-style: italic;

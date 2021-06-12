@@ -98,7 +98,7 @@ getNextIndex = ()=> {
   shuffle card ✅
 
 
-5. deal 7 cards each to player
+5. deal 7 cards each to player ✅
 
 112 cards : 1 -> user / 1 -> pc1 / 1 -> pc2   * 7 
   deck. shift() - user 

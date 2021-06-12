@@ -86,9 +86,9 @@ const game = {
 };
 
 const playerHands = {
-  userHand: [],
-  pc1Hand: [],
-  pc2Hand: [],
+  user: [],
+  pc1: [],
+  pc2: [],
 };
 
 const board = {
@@ -177,6 +177,38 @@ const getCardTemplate = (card) => {
   return template;
 };
 
+const getPcCardTemplate = () => {
+  const template = `
+        <div class="card">
+            <div class="card__circle faceDown"></div>
+        </div>
+    `;
+  return template;
+};
+
+/////////////////////////////////////////////////////////////////
+// * RENDER CARDS 🎨
+/////////////////////////////////////////////////////////////////
+const renderChooseTurn = (card) => {
+  // render to $(`.choose__user--card`)
+  const template = getCardTemplate(card);
+  $(`.choose__${card.player}--card`).html(template);
+
+  $('.chooseBox .card').addClass('discard__card');
+};
+
+// render ONE player's hand.
+const renderHand = (player) => {
+  const template = playerHands[player]
+    .map((card) =>
+      player === 'user' ? getCardTemplate(card) : getPcCardTemplate()
+    )
+    .join('');
+  $(`.${player}Hand`).html(template);
+
+  if (player === 'user') $('.userHand .card').addClass('userCard');
+};
+
 /////////////////////////////////////////////////////////////////
 // * GAME START 🦊
 /////////////////////////////////////////////////////////////////
@@ -188,10 +220,20 @@ const shuffleDeck = () => {
       board.deck[i],
     ];
   }
-  console.log(board.deck);
 };
 
-const deal7CardsToEachPlayers = () => {};
+const deal7CardsToEachPlayers = () => {
+  for (let i = 0; i < 7; i++) {
+    for (const player in playerHands) {
+      const card = board.deck.pop();
+      playerHands[player].push(card);
+    }
+  }
+  //! 🎨 render : now i have each players name : user, pc1, pc2
+  game.players.forEach((player) => {
+    renderHand(player);
+  });
+};
 
 const startGame = () => {
   console.log('game start!');
@@ -205,12 +247,6 @@ const startGame = () => {
 /////////////////////////////////////////////////////////////////
 // * CHOOSE TURN 🍻
 /////////////////////////////////////////////////////////////////
-
-const renderChooseTurn = (card) => {
-  // render to $(`.choose__user--card`)
-  const template = getCardTemplate(card);
-  $(`.choose__${card.player}--card`).html(template);
-};
 
 const chooseTurn = (e) => {
   const userRandomCard = board.deck[getRandomNum(board.deck.length)];
@@ -227,7 +263,6 @@ const chooseTurn = (e) => {
   //! 🎨 render
   randomCards.forEach((card) => {
     renderChooseTurn(card);
-    $('.chooseBox .card').addClass('discard__card');
   });
   //! Remove btn
   $(e.target).addClass('none');
