@@ -97,12 +97,11 @@ const createDeck = () => {
 
 const game = {
   players: ['user', 'pc1', 'pc2'],
-  currPlayer: 'pc2',
-  currIndex: null,
+  currPlayer: 'pc1',
+  currIndex: 1,
   nextIndex: null,
   currCard: null, //FIXME
-  currColor: null,
-  currValue: null,
+  isSpecialValid: false,
 };
 
 const playerHands = {
@@ -317,7 +316,6 @@ const flipOneDrawPileToDiscardPile = () => {
   }
 };
 
-// HERE
 const checkPcHand = (whoes) => {
   const matchedArray = [];
   const currCard = game.currCard;
@@ -331,7 +329,78 @@ const checkPcHand = (whoes) => {
   return matchedArray;
 };
 
-const gameFlow = () => {};
+/////////////////////////////////////////////////////////////////
+// * SPECIAL CARDS!! 🐥
+/////////////////////////////////////////////////////////////////
+//! JUST FOCUS ON SPECIAL CARDS' METHODS
+
+const skip = () => {
+  if (game.currCard.value !== 'skip') return;
+  // CURRENT!
+  // curIndex = 2
+  // currPlayer = pc2
+  // currCard.value = 'skip'
+
+  changePlayer();
+  changePlayer();
+};
+
+const draw = () => {
+  const nextIndex = getNextIndex();
+  const nextPlayer = game.players[nextIndex];
+  drawOneCard(nextPlayer);
+};
+
+const reverse = () => {
+  const reversedPlayers = game.players.reverse();
+  game.players = reversedPlayers;
+  setCurrIndex(); // set the current player's index in reversed players array.
+};
+
+const wild = () => {
+  if (game.currPlayer === 'user') {
+  } else {
+    // pc1, pc2
+    const newColor = game.colors[getRandomNum(game.colors.length)];
+    game.currCard.color = newColor;
+  }
+};
+
+const wildDraw4 = () => {
+  if (game.currPlayer === 'user') {
+  } else {
+    // pc1, pc2
+    const newColor = game.colors[getRandomNum(game.colors.length)];
+    const nextIndex = getNextIndex();
+    const nextPlayer = game.players[nextIndex];
+    game.currCard.color = newColor;
+    drawOneCard(nextPlayer);
+    drawOneCard(nextPlayer);
+    drawOneCard(nextPlayer);
+    drawOneCard(nextPlayer);
+  }
+};
+
+//HERE
+/////////////////////////////////////////////////////////////////
+// * GAME FLOW!! 🦊
+/////////////////////////////////////////////////////////////////
+const gameFlow = () => {
+  // if top card is skip or reverse or draw2, do sth.
+  // this will be repeated during whole game session.
+  // I need some functions for each special cards.
+
+  // skip : getNextIndex() * 2 , update the currPlayer by using nextIndex
+  // draw2 : drawPile.pop() * 2 => push them to  currPlayer's hand
+  // reverse :  game.players.reverse()  => setCurrIndex , nextindex as well
+  // wild : currPlayer can choose color. and then if done, then change to next player
+  // wildDraw4 : same with wild.  next CurrPlayer + 4 cards
+
+  // if currPlayer is pc1 or pc2
+  const currPlayer = game.currPlayer;
+  if (currPlayer === 'pc1' || currPlayer === 'pc2') {
+  }
+};
 
 /////////////////////////////////////////////////////////////////
 // * GAME START!! 🦊
@@ -352,14 +421,11 @@ const startGame = () => {
   }
 
   //* Related to game status!
-  //* Now it's ready. Let's check the first player. currPlayer
-
-  console.log(game.currPlayer);
-  console.log(game.currIndex);
-  // 1. Already know currPlayer.  Set the currIndex, nextplayer
+  //* Now it's ready.
+  console.log(game);
   //! render turn 🎨
   renderCurrPlayerTurnClass();
-
+  // Hope to put game flows here all
   gameFlow();
 };
 
@@ -397,7 +463,7 @@ const chooseTurn = (e) => {
   setTimeout(() => {
     $('.choose__page').addClass('none');
     startGame();
-  }, 2000);
+  }, 5000);
 };
 
 /////////////////////////////////////////////////////////////////
@@ -407,11 +473,6 @@ const chooseTurn = (e) => {
 const main = () => {
   $('.chooseTurn__btn').on('click', chooseTurn);
   startGame();
-  console.log('deck: ', board.deck);
-  console.log('discard: ', board.discardPile);
-  console.log('draw: ', board.drawPile.length);
-  console.log('currcard', game.currCard);
-  console.log('curplayer', game.currPlayer);
 };
 
 $(main);

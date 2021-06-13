@@ -131,7 +131,7 @@ getNextIndex = ()=> {
   < 2 seconds later >
 
 <auto>
-8. turn over the top card of drawpile 
+8. turn over the top card of drawpile ✅
   topcard = drawPile.shift()
   ! css... the last card if drawn last so its on top! 
 
@@ -291,7 +291,7 @@ Inside, ⓵ if currPlayer = user,  board.userHand
 
         next player should be pc1 , index 1, and then user, index 0
   .reverse() => [pc2, pc1, user]   but not curr() index was 2... 
-  ? player.indexOf(currPlayer) => 0
+  ! player.indexOf(currPlayer) => currIndex
   
   changePlayer()  => pc1
   changePlayer()  => user
