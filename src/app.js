@@ -97,8 +97,8 @@ const createDeck = () => {
 
 const game = {
   players: ['user', 'pc1', 'pc2'],
-  currPlayer: 'pc1',
-  currIndex: 1,
+  currPlayer: 'user',
+  currIndex: 0,
   nextIndex: null,
   currCard: null, //FIXME
   isSpecialValid: false,
@@ -199,12 +199,27 @@ const getCardTemplate = (card) => {
 };
 
 const getPcCardTemplate = () => {
-  const template = `
+  return `
         <div class="card">
             <div class="card__circle faceDown"></div>
         </div>
     `;
-  return template;
+};
+
+const getColorChangeModalTemplate = () => {
+  return `
+  
+    <div class="changeModal">
+        <h3>Choose and click a new color</h3>
+        <div class="colorBox">
+          <div id="red"></div>
+          <div id="yellow"></div>
+          <div id="green"></div>
+          <div id="blue"></div>
+        </div>
+      </div>
+  
+  `;
 };
 
 /////////////////////////////////////////////////////////////////
@@ -329,6 +344,17 @@ const checkPcHand = (whoes) => {
   return matchedArray;
 };
 
+const showChangeModal = () => {
+  const template = getColorChangeModalTemplate();
+  const $colorModal = $('<div>').addClass('changeColorPage none');
+  $colorModal.html(template);
+  $('body').prepend($colorModal);
+};
+
+const getNewColor = (e) => {
+  const newColor = e.target.attr('id');
+  game.currCard.color = newColor;
+};
 /////////////////////////////////////////////////////////////////
 // * SPECIAL CARDS!! 🐥
 /////////////////////////////////////////////////////////////////
@@ -359,6 +385,8 @@ const reverse = () => {
 
 const wild = () => {
   if (game.currPlayer === 'user') {
+    $('.changeColorPage').removeClass('none');
+    $('.colorBox').on('click', getNewColor);
   } else {
     // pc1, pc2
     const newColor = game.colors[getRandomNum(game.colors.length)];
@@ -368,6 +396,12 @@ const wild = () => {
 
 const wildDraw4 = () => {
   if (game.currPlayer === 'user') {
+    $('.changeColorPage').removeClass('none');
+    $('.colorBox').on('click', getNewColor);
+    drawOneCard(nextPlayer);
+    drawOneCard(nextPlayer);
+    drawOneCard(nextPlayer);
+    drawOneCard(nextPlayer);
   } else {
     // pc1, pc2
     const newColor = game.colors[getRandomNum(game.colors.length)];
@@ -389,12 +423,6 @@ const gameFlow = () => {
   // if top card is skip or reverse or draw2, do sth.
   // this will be repeated during whole game session.
   // I need some functions for each special cards.
-
-  // skip : getNextIndex() * 2 , update the currPlayer by using nextIndex
-  // draw2 : drawPile.pop() * 2 => push them to  currPlayer's hand
-  // reverse :  game.players.reverse()  => setCurrIndex , nextindex as well
-  // wild : currPlayer can choose color. and then if done, then change to next player
-  // wildDraw4 : same with wild.  next CurrPlayer + 4 cards
 
   // if currPlayer is pc1 or pc2
   const currPlayer = game.currPlayer;
@@ -422,7 +450,7 @@ const startGame = () => {
 
   //* Related to game status!
   //* Now it's ready.
-  console.log(game);
+
   //! render turn 🎨
   renderCurrPlayerTurnClass();
   // Hope to put game flows here all
@@ -471,6 +499,7 @@ const chooseTurn = (e) => {
 /////////////////////////////////////////////////////////////////
 
 const main = () => {
+  showChangeModal();
   $('.chooseTurn__btn').on('click', chooseTurn);
   startGame();
 };

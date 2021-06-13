@@ -232,7 +232,7 @@ Draw one card from drawPile to currPlayer (unshift)
 🌿 changeToNextPlayer()
 
 ////////////////////////////////////////////////////////////////////////////////////
-!!! How to connect both two???...
+!!! How to connect both two???... ✅
 ! currPlayer : user
 ! userHand = []
 
@@ -268,7 +268,7 @@ Inside, ⓵ if currPlayer = user,  board.userHand
 * currCard
 * if isSpecialValid = true
 
-⓵ if currCard === 'skip'
+⓵ if currCard === 'skip' ✅
   skip player
   [0, 1, 2]
   if curr is pc1
@@ -282,7 +282,7 @@ Inside, ⓵ if currPlayer = user,  board.userHand
   if(currPlayer is pc1pc2) do sth
   if(currPlayer is user) do sth
 
-⓵ if currCard === 'reverse'
+⓵ if currCard === 'reverse' ✅
 [user, pc1, pc2]
   -0
         -1
@@ -305,10 +305,10 @@ Inside, ⓵ if currPlayer = user,  board.userHand
   if(currPlayer is user) do sth
 
 TODO
-⓵ if currCard === 'wild'
+⓵ if currCard === 'wild' ✅
 
 
-⓵ if currCard === 'wildDraw4'
+⓵ if currCard === 'wildDraw4' ✅
 
 
 

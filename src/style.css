@@ -323,6 +323,61 @@ button:active {
 /*  * EXTRA */
 /* ////////////////////////////////////////////// */
 
+.changeColorPage {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(71, 69, 69, 0.568);
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.changeModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  padding: 2rem;
+  box-shadow: var(--board-shadow);
+  border-radius: 1rem;
+}
+
+.colorBox {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: 20rem;
+  width: 40rem;
+
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+#red {
+  background-color: var(--red);
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+#yellow {
+  background-color: var(--yellow);
+}
+
+#green {
+  background-color: var(--green);
+}
+
+#blue {
+  background-color: var(--blue);
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
 .transparent {
   opacity: 0;
 }
@@ -340,7 +395,6 @@ button:active {
   background-color: darkred;
   border: 2px solid rgb(255, 255, 148);
 }
-
 /* //////////////////////////////////////////// */
 /*  * ANIMATION*/
 /* //////////////////////////////////////////// */
