@@ -14,6 +14,24 @@ const colors = {
 };
 
 const cardInfo = {
+  // color, face, faceUp, value, ! point
+  value: [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    'skip',
+    'reverse',
+    'draw2',
+    'wild',
+    'wildDraw4',
+  ],
   face: [
     0,
     1,
@@ -37,20 +55,22 @@ const cardInfo = {
 const create1Set = () => {
   const set = cardInfo.color.map((color) => {
     const cards = [];
-    let value = 0;
-    cardInfo.face.forEach((face) => {
+    let point = 0;
+    cardInfo.face.forEach((face, i) => {
       const card = {
         color: color,
         faceUp: false,
-        value: value,
+        value: cardInfo.value[i],
         face: face,
         color: color,
+        point: point,
       };
-      value++;
+      point++;
       cards.push(card);
     });
     return cards;
   });
+
   return set;
 };
 
@@ -70,6 +90,7 @@ const createDeck = () => {
   // Total 108 cards
   return deck;
 };
+createDeck();
 
 //////////////////////////////////////////////////////
 //// * GAME STATUS 🐸
@@ -80,7 +101,7 @@ const game = {
   currPlayer: 'pc1',
   currIndex: null,
   nextIndex: null,
-  currCard: null,
+  currCard: { value: 'wild' }, //FIXME
   currColor: null,
   currValue: null,
 };
@@ -128,7 +149,7 @@ const changePlayer = () => {
 // MUST ADD CLASS IF NEEDED
 const getCardTemplate = (card) => {
   let template = '';
-  if (card.face !== 'wild' && card.face !== 'wildDraw4') {
+  if (card.value !== 'wild' && card.value !== 'wildDraw4') {
     template = `
       <div class="card" style="background-color: ${card.color}">
           <p class="card__value card__value--top">${card.face}</p>
@@ -136,7 +157,7 @@ const getCardTemplate = (card) => {
           <p class="card__value card__value--main">${card.face}</p>
           <p class="card__value card__value--bottom">${card.face}</p>
       </div>`;
-  } else if (card.face === 'wild') {
+  } else if (card.value === 'wild') {
     template = `
       <div class="card" style="background-color: ${card.color}">
       <p class="card__value card__value--top">
@@ -154,7 +175,7 @@ const getCardTemplate = (card) => {
       </p>
     </div>
         `;
-  } else if (card.face === 'wildDraw4') {
+  } else if (card.value === 'wildDraw4') {
     template = `
       <div class="card" style="background-color: ${card.color}">
       <p class="card__value card__value--top">
@@ -217,6 +238,13 @@ const renderDrawPile = () => {
   $('.draw__remain-num').text(board.drawPile.length);
 };
 
+const renderDiscardPile = (currCard) => {
+  //currCard one card is enough
+  const template = getCardTemplate(currCard);
+  $('.discard').html(template);
+  $('.discard .card').addClass('discard__card');
+};
+
 /////////////////////////////////////////////////////////////////
 // * GAME FUNCTIONS 🦊
 /////////////////////////////////////////////////////////////////
@@ -251,20 +279,57 @@ const remainingCardsToDrawPile = () => {
   renderDrawPile();
 };
 
+const drawOneCard = (pushTo) => {
+  const drawCard = board.drawPile.pop();
+  pushTo.push(drawCard);
+
+  //! render drawPile🎨
+  renderDrawPile();
+
+  return drawCard;
+};
+
+//HERE
+const flipOneDrawPileToDiscardPile = () => {
+  // FIXME
+
+  const flippedCard = drawOneCard(board.discardPile);
+
+  //! render 🎨
+  renderDiscardPile(flippedCard);
+  game.currCard = flippedCard;
+
+  //TODO;
+  //! maybe i can add some css animation here or give timeout.
+  //! animation for discard pile  like flip.
+
+  // If flip card is wild or wildDraw4, I will repeat this function until flip card is one of other value card.
+  if (flippedCard.value === 'wild' || flippedCard.value === 'wildDraw4') {
+    const wildCard = board.discardPile.pop();
+    // Return to deck
+    board.deck.push(wildCard);
+    return flipOneDrawPileToDiscardPile();
+  }
+};
+
 /////////////////////////////////////////////////////////////////
 // * GAME START!! 🦊
 /////////////////////////////////////////////////////////////////
 
 const startGame = () => {
   console.log('game start!');
-  getCurrIndex();
-
-  //? Doing all jobs related to Board deck! Cards!
+  //* Doing all jobs related to Board deck! Cards!
   shuffleDeck();
 
   deal7CardsToEachPlayers();
 
   remainingCardsToDrawPile();
+
+  // turn over the top card of drawpile    .pop()
+  flipOneDrawPileToDiscardPile();
+
+  //* Related to game status!
+  getCurrIndex(); // currPlayer, currIndex
 };
 
 /////////////////////////////////////////////////////////////////
@@ -281,7 +346,7 @@ const chooseTurn = (e) => {
   pc2RandomCard.player = 'pc2';
 
   const randomCards = [userRandomCard, pc1RandomCard, pc2RandomCard];
-  const highest = randomCards.sort((a, b) => b.value - a.value)[0];
+  const highest = randomCards.sort((a, b) => b.point - a.point)[0];
 
   //! 🎨 render
   randomCards.forEach((card) => {
@@ -310,6 +375,9 @@ const chooseTurn = (e) => {
 const main = () => {
   $('.chooseTurn__btn').on('click', chooseTurn);
   startGame();
+  console.log('deck: ', board.deck);
+  console.log('discard: ', board.discardPile);
+  console.log('draw: ', board.drawPile.length);
 };
 
 $(main);

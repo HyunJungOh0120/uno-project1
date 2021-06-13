@@ -133,6 +133,7 @@ getNextIndex = ()=> {
 <auto>
 8. turn over the top card of drawpile 
   topcard = drawPile.shift()
+  ! css... the last card if drawn last so its on top! 
 
   ⓵ if topcard is "wild" or "wildDraw4",  return it to deck
   ex)
