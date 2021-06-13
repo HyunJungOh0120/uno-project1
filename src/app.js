@@ -90,7 +90,6 @@ const createDeck = () => {
   // Total 108 cards
   return deck;
 };
-createDeck();
 
 //////////////////////////////////////////////////////
 //// * GAME STATUS 🐸
@@ -98,10 +97,10 @@ createDeck();
 
 const game = {
   players: ['user', 'pc1', 'pc2'],
-  currPlayer: 'pc1',
+  currPlayer: 'pc2',
   currIndex: null,
   nextIndex: null,
-  currCard: { value: 'wild' }, //FIXME
+  currCard: null, //FIXME
   currColor: null,
   currValue: null,
 };
@@ -119,12 +118,14 @@ const board = {
 };
 
 ///////////////////////////////////////////////////////////////
-// * GAME 🦄
+// * GAME PLAYER FLOW 🦄
 ///////////////////////////////////////////////////////////////
 const getRandomNum = (limit) => Math.floor(Math.random() * limit);
-const getCurrIndex = () => {
+const setCurrIndex = () => {
   game.currIndex = game.players.indexOf(game.currPlayer);
 };
+
+// In case of skip, reverse, I need to make a function to get NextIndex and  get the index as return.
 const getNextIndex = () => {
   const nextIndex =
     game.currIndex === game.players.length - 1 ? 0 : game.currIndex + 1;
@@ -245,6 +246,11 @@ const renderDiscardPile = (currCard) => {
   $('.discard .card').addClass('discard__card');
 };
 
+const renderCurrPlayerTurnClass = () => {
+  $('.hand').removeClass('turn');
+  $(`.${game.currPlayer}Hand`).addClass('turn');
+};
+
 /////////////////////////////////////////////////////////////////
 // * GAME FUNCTIONS 🦊
 /////////////////////////////////////////////////////////////////
@@ -289,7 +295,6 @@ const drawOneCard = (pushTo) => {
   return drawCard;
 };
 
-//HERE
 const flipOneDrawPileToDiscardPile = () => {
   // FIXME
 
@@ -312,6 +317,22 @@ const flipOneDrawPileToDiscardPile = () => {
   }
 };
 
+// HERE
+const checkPcHand = (whoes) => {
+  const matchedArray = [];
+  const currCard = game.currCard;
+  const hand = playerHands[whoes];
+
+  hand.forEach((card) => {
+    if (card.color === currCard.color || card.value === currCard.value)
+      matchedArray.push(card);
+  });
+
+  return matchedArray;
+};
+
+const gameFlow = () => {};
+
 /////////////////////////////////////////////////////////////////
 // * GAME START!! 🦊
 /////////////////////////////////////////////////////////////////
@@ -325,11 +346,21 @@ const startGame = () => {
 
   remainingCardsToDrawPile();
 
-  // turn over the top card of drawpile    .pop()
-  flipOneDrawPileToDiscardPile();
+  if (!game.currCard) {
+    // turn over the top card of drawpile    .pop()
+    flipOneDrawPileToDiscardPile();
+  }
 
   //* Related to game status!
-  getCurrIndex(); // currPlayer, currIndex
+  //* Now it's ready. Let's check the first player. currPlayer
+
+  console.log(game.currPlayer);
+  console.log(game.currIndex);
+  // 1. Already know currPlayer.  Set the currIndex, nextplayer
+  //! render turn 🎨
+  renderCurrPlayerTurnClass();
+
+  gameFlow();
 };
 
 /////////////////////////////////////////////////////////////////
@@ -360,6 +391,7 @@ const chooseTurn = (e) => {
 
   //! Update the game status.
   game.currPlayer = highest.player;
+  setCurrIndex();
 
   //! GAME START!!
   setTimeout(() => {
@@ -378,6 +410,8 @@ const main = () => {
   console.log('deck: ', board.deck);
   console.log('discard: ', board.discardPile);
   console.log('draw: ', board.drawPile.length);
+  console.log('currcard', game.currCard);
+  console.log('curplayer', game.currPlayer);
 };
 
 $(main);
