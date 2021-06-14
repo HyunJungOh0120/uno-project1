@@ -303,7 +303,7 @@ const drawOneCard = (pushTo) => {
   //! render drawPile🎨
   renderDrawPile(board);
 
-  return drawCard;
+  //return drawCard;
 };
 
 const flipOneDrawPileToDiscardPile = () => {
@@ -368,6 +368,7 @@ const specialCardsMethod = {
     const nextPlayer = game.players[nextIndex];
 
     repeat(2, drawOneCard, nextPlayer);
+    renderHand(nextPlayer);
     repeat(2, changePlayer, game);
   },
   reverse(game) {
@@ -384,6 +385,7 @@ const specialCardsMethod = {
       const newColor = Object.keys(colors)[getRandomNum(Object.keys(colors))];
       game.currCard.color = newColor;
     }
+    renderDiscardPile(game);
   },
   wildDraw4(game) {
     // TODO
@@ -398,7 +400,9 @@ const specialCardsMethod = {
       nextPlayer = game.players[nextIndex];
       game.currCard.color = newColor;
     }
+    renderDiscardPile(game);
     repeat(4, drawOneCard, nextPlayer);
+    renderHand(nextPlayer);
     repeat(2, changePlayer, game);
   },
 };
@@ -406,26 +410,31 @@ const specialCardsMethod = {
 /////////////////////////////////////////////////////////////////
 // * GAME FLOW - PC1 / PC2 !! 🦊
 /////////////////////////////////////////////////////////////////
-const activateSpecialCards = (game) => {
+const activateSpecialCards = (card) => {
   // SKIP, DRAW2, WILD4   HAS CHANGEPLAYER
   // REVERSE, WILD        NO  CHANGEPLAYER
-  const cardValue = game.currCard.value;
+  const cardValue = card.value;
   if (typeof cardValue === 'number') return;
   if (cardValue === 'skip') {
+    console.log('skip');
     specialCardsMethod.skip(game);
   }
   if (cardValue === 'draw2') {
+    console.log('draw2');
     specialCardsMethod.draw2(game);
   }
   if (cardValue === 'reverse') {
+    console.log('reverse');
     specialCardsMethod.reverse(game);
     changePlayer(game);
   }
   if (cardValue === 'wild') {
+    console.log('wild');
     specialCardsMethod.wild(game);
     changePlayer(game);
   }
   if (cardValue === 'wildDraw4') {
+    console.log('wilddDraw4');
     specialCardsMethod.wildDraw4(game);
   }
 };
@@ -447,7 +456,6 @@ const pcTurn = (currPlayer) => {
     }
 
     game.currCard = chosenCard;
-    activateSpecialCards(game);
 
     //! remove chosencard from hand & move to discardpile
     const cardIndexInHand = playerHands[currPlayer].indexOf(chosenCard);
@@ -459,8 +467,6 @@ const pcTurn = (currPlayer) => {
       renderHand(currPlayer);
       renderDiscardPile(game);
     }, 2000);
-    // renderHand(currPlayer);
-    // renderDiscardPile(game);
 
     //! WHEN PC DOESN'T HAVE A CARD ❌
   } else {
@@ -468,10 +474,22 @@ const pcTurn = (currPlayer) => {
     renderDrawPile(board);
     renderHand(currPlayer);
   }
-  console.log('✅ Current Player: ', game.currPlayer);
-  console.log('------------------------');
 
-  changePlayer(game);
+  if (typeof game.currCard.value !== 'number') {
+    activateSpecialCards(game.currCard);
+  } else {
+    changePlayer(game);
+  }
+};
+
+const handlerUserCardClick = (e) => {
+  console.log(e.currentTarget);
+  console.log(e.target);
+};
+
+const userTurn = () => {
+  console.log('USER TURN!');
+  $('.userHand').on('click', handlerUserCardClick);
 };
 
 /////////////////////////////////////////////////////////////////
@@ -485,23 +503,27 @@ const gameFlow = (game) => {
   const currPlayer = game.currPlayer;
 
   if (currPlayer === 'user') {
-    console.log('USER TURN!');
+    userTurn();
+    console.log('FLOW FINISH💥');
+    console.log('------------------------');
     return;
   }
   if (currPlayer !== 'user') {
     //! TODO HERE I CAN ADD DELAY OR PAUSE!
     pcTurn(currPlayer);
     console.log('FLOW FINISH💥');
+    console.log('------------------------');
+    setTimeout(() => {
+      gameFlow(game);
+    }, 3000);
   }
   //return gameFlow(game);
-  setTimeout(() => {
-    gameFlow(game);
-  }, 3000);
 };
 
 /////////////////////////////////////////////////////////////////
 // * GAME START!! 🦊
 /////////////////////////////////////////////////////////////////
+
 const checkBeginningCard = () => {
   if (typeof game.currCard.value !== 'number') {
     const specialCard = game.currCard.value;
