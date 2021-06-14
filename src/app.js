@@ -352,25 +352,41 @@ const checkPcHand = (whoes) => {
   return matchedArray;
 };
 
+// TODO
 const getNewColor = (e) => {
-  console.log(e.target);
-  const newColor = e.target.attr('id');
-  // game.currCard.color = newColor;
+  const $chosenColor = $(e.target).css('background-color').replace(/\s/g, '');
+  game.currCard.color = $chosenColor;
+
+  return $chosenColor;
 };
 
-const showChangeModal = ($cardIndex) => {
-  $('.changeColorPage').removeClass('none');
-  $('.colorBox').on('click', getNewColor);
-  // const splicedCard = playerHands.user.splice($cardIndex, 1);
-  //     board.discardPile.push(splicedCard);
-  //     //! render userHand and discardPile 🎨
-  //     renderHand('user');
-  //     //renderDiscardPile(game);
-  //     renderDrawAndDiscard();
-  //     // change player
-  //     finalChangePlayer(game);
+const $colorChangeModal = (colors) => {
+  $('#red').css('background-color', colors.red);
+  $('#yellow').css('background-color', colors.yellow);
+  $('#green').css('background-color', colors.green);
+  $('#blue').css('background-color', colors.blue);
+};
 
-  //     return gameFlow(game);
+const showColorChangeModal = ($cardIndex) => {
+  console.log('change color');
+  let isColorChosen = false;
+  //! show modal and re-assure the modal colors
+  $('.changeColorPage').removeClass('none');
+  $colorChangeModal(colors);
+
+  $('.colorBox').on('click', getNewColor);
+
+  if (getNewColor) {
+    const splicedCard = playerHands.user.splice($cardIndex, 1);
+    board.discardPile.push(splicedCard);
+    //! render userHand and discardPile 🎨
+    renderHand('user');
+    renderDrawAndDiscard();
+    // change player
+    finalChangePlayer(game);
+
+    return gameFlow(game);
+  }
 };
 
 /////////////////////////////////////////////////////////////////
@@ -562,7 +578,7 @@ const handlerUserCardClick = (e) => {
     game.currCard = chosenCard;
 
     if (game.currCard.value === 'wild' || game.currCard.value === 'wildDraw4') {
-      showChangeModal($cardIndex);
+      showColorChangeModal($cardIndex);
     } else {
       const splicedCard = playerHands.user.splice($cardIndex, 1);
       board.discardPile.push(splicedCard);
@@ -670,7 +686,7 @@ const startGame = () => {
   //! render currplayer hand 🎨
   renderHand(game.currPlayer);
 
-  gameFlow(game);
+  //gameFlow(game);
 };
 
 /////////////////////////////////////////////////////////////////
@@ -718,6 +734,7 @@ const main = () => {
   createDeck(board);
   //$('.chooseTurn__btn').on('click', chooseTurn);
   startGame();
+  showColorChangeModal();
 };
 
 $(main);
