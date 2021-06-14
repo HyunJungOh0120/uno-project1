@@ -154,6 +154,8 @@ const changePlayer = (game) => {
   }
 };
 
+console.log(getRandomNum(Object.keys(colors).length)); // 3
+
 /////////////////////////////////////////////////////////////////
 // * CREATE TEMPLATES 🐰
 /////////////////////////////////////////////////////////////////
@@ -258,9 +260,19 @@ const renderDiscardPile = (game) => {
 
 const renderCurrPlayerTurnClass = (game) => {
   $('.hand').removeClass('turn');
+  $('.hand').removeClass('skip');
   $(`.${game.currPlayer}Hand`).addClass('turn');
 };
 
+const renderCurrPlayerSkipClass = (game) => {
+  $('.hand').removeClass('skip');
+  $(`.${game.currPlayer}Hand`).addClass('skip');
+};
+
+const renderDrawAndDiscard = () => {
+  renderDrawPile(board);
+  renderDiscardPile(game);
+};
 /////////////////////////////////////////////////////////////////
 // * GAME FUNCTIONS 🦊
 /////////////////////////////////////////////////////////////////
@@ -305,7 +317,7 @@ const drawOneCard = (pushTo) => {
 
   //return drawCard;
 };
-
+// TODO
 const flipOneDrawPileToDiscardPile = () => {
   const flippedCard = board.drawPile.pop();
   board.discardPile.push(flippedCard);
@@ -340,13 +352,25 @@ const checkPcHand = (whoes) => {
   return matchedArray;
 };
 
-const showChangeModal = () => {
-  $('.changeColorPage').removeClass('none');
+const getNewColor = (e) => {
+  console.log(e.target);
+  const newColor = e.target.attr('id');
+  // game.currCard.color = newColor;
 };
 
-const getNewColor = (e) => {
-  const newColor = e.target.attr('id');
-  game.currCard.color = newColor;
+const showChangeModal = ($cardIndex) => {
+  $('.changeColorPage').removeClass('none');
+  $('.colorBox').on('click', getNewColor);
+  // const splicedCard = playerHands.user.splice($cardIndex, 1);
+  //     board.discardPile.push(splicedCard);
+  //     //! render userHand and discardPile 🎨
+  //     renderHand('user');
+  //     //renderDiscardPile(game);
+  //     renderDrawAndDiscard();
+  //     // change player
+  //     finalChangePlayer(game);
+
+  //     return gameFlow(game);
 };
 
 /////////////////////////////////////////////////////////////////
@@ -361,7 +385,12 @@ const repeat = (num, what, arg) => {
 //! REVERSE, WILD doesn't have changePlayer option
 const specialCardsMethod = {
   skip(game) {
-    repeat(2, changePlayer, game);
+    changePlayer(game);
+    return setTimeout(() => {
+      console.log(`❌ ${game.currPlayer} skipped!`);
+      renderCurrPlayerSkipClass(game);
+      changePlayer(game);
+    }, 2000);
   },
   draw2(game) {
     const nextIndex = getNextIndex(game);
@@ -369,7 +398,15 @@ const specialCardsMethod = {
 
     repeat(2, drawOneCard, nextPlayer);
     renderHand(nextPlayer);
-    repeat(2, changePlayer, game);
+
+    // TODO
+
+    changePlayer(game);
+    return setTimeout(() => {
+      console.log(`❌ ${game.currPlayer} skipped!`);
+      renderCurrPlayerSkipClass(game);
+      changePlayer(game);
+    }, 2000);
   },
   reverse(game) {
     const reversedPlayers = game.players.reverse();
@@ -382,31 +419,46 @@ const specialCardsMethod = {
       $('.colorBox').on('click', getNewColor);
     } else {
       // pc1, pc2
-      const newColor = Object.keys(colors)[getRandomNum(Object.keys(colors))];
+      const colorArr = Object.keys(colors);
+      const newColor = colors[colorArr[getRandomNum(colorArr.length)]];
+
       game.currCard.color = newColor;
     }
-    renderDiscardPile(game);
+    setTimeout(() => {
+      renderDrawAndDiscard();
+    }, 3000);
   },
   wildDraw4(game) {
-    // TODO
-    let nextPlayer;
+    const nextIndex = getNextIndex(game);
+    const nextPlayer = game.players[nextIndex];
     if (game.currPlayer === 'user') {
       $('.changeColorPage').removeClass('none');
       $('.colorBox').on('click', getNewColor);
     } else {
       // pc1, pc2
       const newColor = Object.keys(colors)[getRandomNum(Object.keys(colors))];
-      const nextIndex = getNextIndex(game);
-      nextPlayer = game.players[nextIndex];
       game.currCard.color = newColor;
     }
-    renderDiscardPile(game);
-    repeat(4, drawOneCard, nextPlayer);
-    renderHand(nextPlayer);
-    repeat(2, changePlayer, game);
+    //renderDiscardPile(game);
+    // setTimeout(() => {
+    //   renderDrawAndDiscard();
+    //   repeat(4, drawOneCard, nextPlayer);
+    //   renderHand(nextPlayer);
+    //   repeat(2, changePlayer, game);
+    // }, 3000);
+    renderDrawAndDiscard();
+    changePlayer(game);
+    repeat(4, drawOneCard, game.currPlayer);
+    renderHand(game.currPlayer);
+    return setTimeout(() => {
+      console.log(`❌ ${game.currPlayer} skipped!`);
+      renderCurrPlayerSkipClass(game);
+      changePlayer(game);
+    }, 2000);
   },
 };
 
+specialCardsMethod.wild(game);
 /////////////////////////////////////////////////////////////////
 // * GAME FLOW - PC1 / PC2 !! 🦊
 /////////////////////////////////////////////////////////////////
@@ -448,8 +500,8 @@ const finalChangePlayer = (game) => {
 };
 
 const pcTurn = (currPlayer) => {
+  console.log('💻 PC TURN!');
   const matchingResult = checkPcHand(currPlayer);
-  // const matchingResult = [];
 
   //! WHEN PC HAS A CARD 🅾️
   //* when there are results or is a result
@@ -473,16 +525,26 @@ const pcTurn = (currPlayer) => {
     //! render currhand and discardpile🎨
     setTimeout(() => {
       renderHand(currPlayer);
-      renderDiscardPile(game);
-    }, 2000);
+      //renderDiscardPile(game);
+      renderDrawAndDiscard();
+      finalChangePlayer(game);
+    }, 5000);
 
-    //! WHEN PC DOESN'T HAVE A CARD ❌
+    console.log('🌼 PC CHOICE!!', game.currCard.value);
   } else {
+    //! WHEN PC DOESN'T HAVE A CARD ❌
     drawOneCard(currPlayer);
-    renderDrawPile(board);
+    //renderDrawPile(board);
+    renderDrawAndDiscard();
     renderHand(currPlayer);
+    changePlayer(game);
   }
-  finalChangePlayer(game);
+  console.log('FLOW FINISH💥');
+  console.log('🌼 Current CARD!!', game.currCard.value);
+  console.log('------------------------');
+  return setTimeout(() => {
+    gameFlow(game);
+  }, 9000);
 };
 
 const handlerUserCardClick = (e) => {
@@ -491,8 +553,6 @@ const handlerUserCardClick = (e) => {
   const $cardIndex = $chosenCard.parent().children().index($chosenCard);
   const chosenCard = playerHands.user[$cardIndex];
 
-  console.log(chosenCard);
-  console.log(game.currCard);
   if (
     chosenCard.value === game.currCard.value ||
     chosenCard.color === game.currCard.color
@@ -500,15 +560,24 @@ const handlerUserCardClick = (e) => {
     // if card is valid, i will remove it from userHand and put it back to discardPile
     // Update the currCard
     game.currCard = chosenCard;
-    const splicedCard = playerHands.user.splice($cardIndex, 1);
-    board.discardPile.push(splicedCard);
-    //! render userHand and discardPile 🎨
-    renderHand('user');
-    renderDiscardPile(game);
-    // change player
-    finalChangePlayer(game);
 
-    return gameFlow(game);
+    if (game.currCard.value === 'wild' || game.currCard.value === 'wildDraw4') {
+      showChangeModal($cardIndex);
+    } else {
+      const splicedCard = playerHands.user.splice($cardIndex, 1);
+      board.discardPile.push(splicedCard);
+      //! render userHand and discardPile 🎨
+      renderHand('user');
+      //renderDiscardPile(game);
+      renderDrawAndDiscard();
+      // change player
+      finalChangePlayer(game);
+
+      console.log('FLOW FINISH💥');
+      console.log('🌼 USER CHOICE!!', game.currCard.value);
+      console.log('------------------------');
+      return gameFlow(game);
+    }
   } else {
     console.log('INVALID❌');
   }
@@ -518,15 +587,22 @@ const handlerDrawBtnClick = (e) => {
   console.log('Draw one card for user');
   // draw one card
   drawOneCard('user');
-  changePlayer(game);
   //! render drawPile, userHand 🎨
   renderHand('user');
-  renderDrawPile(board);
+  //renderDrawPile(board);
+  renderDrawAndDiscard();
+
+  changePlayer(game);
+  console.log('FLOW FINISH💥');
+  console.log('🌼 USER DRAW CARD!!', game.currCard.value);
+  console.log('------------------------');
   return gameFlow(game);
 };
 
 const userTurn = () => {
-  console.log('USER TURN!');
+  console.log('🧝‍♀️ USER TURN!');
+
+  // $('main').on('click', userClick);
   $('.draw__btn').on('click', handlerDrawBtnClick);
   $('.userCard').on('click', handlerUserCardClick);
 };
@@ -535,26 +611,20 @@ const userTurn = () => {
 // * GAME FLOW!! 🦊
 /////////////////////////////////////////////////////////////////
 const gameFlow = (game) => {
+  console.log('------------------------');
   console.log('🌿 GAME FLOW!!!', game.currPlayer);
+
   //! render 'turn'class to show whoes turn is now.
   renderCurrPlayerTurnClass(game);
-  // this will be repeated during whole game session.
+
   const currPlayer = game.currPlayer;
 
   if (currPlayer === 'user') {
     userTurn();
-    console.log('FLOW FINISH💥');
-    console.log('------------------------');
   }
   if (currPlayer !== 'user') {
     pcTurn(currPlayer);
-    console.log('FLOW FINISH💥');
-    console.log('------------------------');
-    setTimeout(() => {
-      gameFlow(game);
-    }, 3000);
   }
-  //return gameFlow(game);
 };
 
 /////////////////////////////////////////////////////////////////
