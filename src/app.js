@@ -264,6 +264,7 @@ const renderCurrPlayerTurnClass = (game) => {
 
 const renderCurrPlayerSkipClass = (game) => {
   $('.hand').removeClass('skip');
+  $(`.${game.currPlayer}Hand`).addClass('skip');
 };
 
 const renderDrawAndDiscard = () => {
@@ -273,11 +274,6 @@ const renderDrawAndDiscard = () => {
 /////////////////////////////////////////////////////////////////
 // * GAME FUNCTIONS 🦊
 /////////////////////////////////////////////////////////////////
-
-const syncWait = (ms) => {
-  const end = Date.now() + ms;
-  while (Date.now() < end) continue;
-};
 
 const shuffleDeck = () => {
   for (let i = 0; i < board.deck.length; i++) {
@@ -363,8 +359,13 @@ const getNewColor = (e) => {
   //! render userHand and discardPile 🎨
   renderHand('user');
   renderDrawAndDiscard();
-  // change player
-  finalChangePlayer(game);
+
+  if (game.currCard.value === 'wild') {
+    specialCardsMethod.wild(game);
+    changePlayer(game);
+  } else if (game.currCard.value === 'wildDraw4') {
+    specialCardsMethod.wildDraw4(game);
+  }
 
   return setTimeout(() => {
     gameFlow(game);
@@ -397,7 +398,7 @@ const repeat = (num, what, arg) => {
   }
 };
 
-//! REVERSE, WILD doesn't have changePlayer option
+//! Including changeplayer()
 const specialCardsMethod = {
   skip(game) {
     changePlayer(game);
@@ -408,7 +409,6 @@ const specialCardsMethod = {
     setTimeout(() => {
       changePlayer(game);
     }, 3000);
-    changePlayer(game);
   },
   draw2(game) {
     const nextIndex = getNextIndex(game);
@@ -417,7 +417,6 @@ const specialCardsMethod = {
     repeat(2, drawOneCard, nextPlayer);
     renderHand(nextPlayer);
 
-    // TODO
     changePlayer(game);
     console.log(`❌ ${game.currPlayer} skipped!`);
     renderCurrPlayerSkipClass(game);
@@ -425,7 +424,6 @@ const specialCardsMethod = {
     setTimeout(() => {
       changePlayer(game);
     }, 3000);
-    changePlayer(game);
   },
   reverse(game) {
     const reversedPlayers = game.players.reverse();
@@ -462,48 +460,46 @@ const specialCardsMethod = {
     setTimeout(() => {
       changePlayer(game);
     }, 3000);
-    changePlayer(game);
   },
 };
 
 /////////////////////////////////////////////////////////////////
 // * GAME FLOW - PC1 / PC2 !! 🦊
 /////////////////////////////////////////////////////////////////
-const activateSpecialCards = (card) => {
+const activateSpecialCards = (game) => {
   // SKIP, DRAW2, WILD4   HAS CHANGEPLAYER
   // REVERSE, WILD        NO  CHANGEPLAYER
-  const cardValue = card.value;
-  if (typeof cardValue === 'number') return;
-  if (cardValue === 'skip') {
+  const cardValue = game.currCard.value;
+  console.log('checking value', typeof cardValue);
+  if (typeof cardValue === 'number') {
+    changePlayer(game);
+  } else if (cardValue === 'skip') {
     specialCardsMethod.skip(game);
-  }
-  if (cardValue === 'draw2') {
+  } else if (cardValue === 'draw2') {
     specialCardsMethod.draw2(game);
-  }
-  if (cardValue === 'reverse') {
+  } else if (cardValue === 'reverse') {
     specialCardsMethod.reverse(game);
     changePlayer(game);
-  }
-  if (cardValue === 'wild') {
-    specialCardsMethod.wild(game);
-    changePlayer(game);
-  }
-  if (cardValue === 'wildDraw4') {
-    specialCardsMethod.wildDraw4(game);
-  }
-};
-
-const finalChangePlayer = (game) => {
-  if (typeof game.currCard.value !== 'number') {
-    activateSpecialCards(game.currCard);
-  } else {
-    changePlayer(game);
+  } else if (cardValue === 'wild') {
+    if (game.currPlayer !== 'user') {
+      specialCardsMethod.wild(game);
+      changePlayer(game);
+    } else {
+      showColorChangeModal();
+    }
+  } else if (cardValue === 'wildDraw4') {
+    if (game.currPlayer !== 'user') {
+      specialCardsMethod.wildDraw4(game);
+    } else {
+      showColorChangeModal();
+    }
   }
 };
 
-const pcTurn = (currPlayer) => {
+const pcTurn = () => {
   renderCurrPlayerTurnClass(game);
   console.log('💻');
+  const currPlayer = game.currPlayer;
   const matchingResult = checkPcHand(currPlayer);
 
   //! WHEN PC HAS A CARD 🅾️
@@ -519,23 +515,23 @@ const pcTurn = (currPlayer) => {
     }
 
     game.currCard = chosenCard;
-    console.log(game.currPlayer, ' GOT ', game.currCard.value);
-    console.log('------------------------');
+
     //! remove chosencard from hand & move to discardpile
     const cardIndexInHand = playerHands[currPlayer].indexOf(chosenCard);
     const card = playerHands[currPlayer].splice(cardIndexInHand, 1);
     board.discardPile.push(card);
 
     //! render currhand and discardpile🎨
-
     renderHand(currPlayer);
-    //renderDiscardPile(game);
     renderDrawAndDiscard();
-    finalChangePlayer(game);
+    activateSpecialCards(game);
+
+    console.log(game.currPlayer, ' GOT ', game.currCard.value);
+    console.log('------------------------');
   } else {
     //! WHEN PC DOESN'T HAVE A CARD ❌
     drawOneCard(currPlayer);
-    //renderDrawPile(board);
+
     renderDrawAndDiscard();
     renderHand(currPlayer);
     changePlayer(game);
@@ -558,8 +554,6 @@ const handlerUserCardClick = (e) => {
     chosenCard.value === game.currCard.value ||
     chosenCard.color === game.currCard.color
   ) {
-    // Update the currCard
-    // if card is valid, remove it from userHand and put it back to discardPile
     game.currCard = chosenCard;
     const splicedCard = playerHands.user.splice($cardIndex, 1);
     board.discardPile.push(splicedCard);
@@ -568,19 +562,16 @@ const handlerUserCardClick = (e) => {
     renderHand('user');
     renderDrawAndDiscard();
 
-    //TODO BUG
-    if (game.currCard.value === 'wild' || game.currCard.value === 'wildDraw4') {
-      showColorChangeModal(game);
-    } else {
-      finalChangePlayer(game);
+    //TODO BUG activateSpecialCards(game)  if game.currPlayer is user, then. showColorChangeModal
+    activateSpecialCards(game);
 
-      console.log('USER GOT: ', game.currCard.value);
-      console.log('------------');
+    console.log('USER GOT: ', game.currCard.value, game.currCard.color);
+    console.log('------------');
 
-      return setTimeout(() => {
-        gameFlow(game);
-      }, 4000);
-    }
+    console.log('after user..', game.currPlayer);
+    return setTimeout(() => {
+      gameFlow(game);
+    }, 3000);
   } else {
     console.log('INVALID❌');
   }
@@ -615,6 +606,8 @@ const userTurn = () => {
 /////////////////////////////////////////////////////////////////
 const gameFlow = (game) => {
   console.log('🌿 NEXT: ', game.currPlayer);
+  console.log('CUR CARD IS ', game.currCard.value, game.currCard.color);
+  console.log('-----------------');
 
   //! render 'turn'class to show whoes turn is now.
   renderCurrPlayerTurnClass(game);
@@ -623,7 +616,7 @@ const gameFlow = (game) => {
     userTurn();
   }
   if (game.currPlayer !== 'user') {
-    pcTurn(game.currPlayer);
+    pcTurn();
   }
 };
 

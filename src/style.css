@@ -396,10 +396,10 @@ button:active {
   box-shadow: var(--turn-shadow);
   border: 8px solid var(--turn);
 }
-.skip {
+/* .skip {
   box-shadow: var(--skip-shadow);
   border: 8px solid var(--skip);
-}
+} */
 
 .skip::before {
   content: 'SKIP';
