@@ -154,8 +154,6 @@ const changePlayer = (game) => {
   }
 };
 
-console.log(getRandomNum(Object.keys(colors).length)); // 3
-
 /////////////////////////////////////////////////////////////////
 // * CREATE TEMPLATES 🐰
 /////////////////////////////////////////////////////////////////
@@ -356,37 +354,31 @@ const checkPcHand = (whoes) => {
 const getNewColor = (e) => {
   const $chosenColor = $(e.target).css('background-color').replace(/\s/g, '');
   game.currCard.color = $chosenColor;
+  //! render userHand and discardPile 🎨
+  renderHand('user');
+  renderDrawAndDiscard();
+  // change player
+  finalChangePlayer(game);
 
-  return $chosenColor;
+  $('.changeColorPage').addClass('none');
+  return gameFlow(game);
 };
 
-const $colorChangeModal = (colors) => {
+const $colorChangeModalReset = (colors) => {
   $('#red').css('background-color', colors.red);
   $('#yellow').css('background-color', colors.yellow);
   $('#green').css('background-color', colors.green);
   $('#blue').css('background-color', colors.blue);
 };
 
-const showColorChangeModal = ($cardIndex) => {
+const showColorChangeModal = (game) => {
   console.log('change color');
-  let isColorChosen = false;
+
   //! show modal and re-assure the modal colors
   $('.changeColorPage').removeClass('none');
-  $colorChangeModal(colors);
+  $colorChangeModalReset(colors);
 
   $('.colorBox').on('click', getNewColor);
-
-  if (getNewColor) {
-    const splicedCard = playerHands.user.splice($cardIndex, 1);
-    board.discardPile.push(splicedCard);
-    //! render userHand and discardPile 🎨
-    renderHand('user');
-    renderDrawAndDiscard();
-    // change player
-    finalChangePlayer(game);
-
-    return gameFlow(game);
-  }
 };
 
 /////////////////////////////////////////////////////////////////
@@ -430,10 +422,7 @@ const specialCardsMethod = {
     getCurrIndex(game);
   },
   wild(game) {
-    if (game.currPlayer === 'user') {
-      $('.changeColorPage').removeClass('none');
-      $('.colorBox').on('click', getNewColor);
-    } else {
+    if (game.currPlayer !== 'user') {
       // pc1, pc2
       const colorArr = Object.keys(colors);
       const newColor = colors[colorArr[getRandomNum(colorArr.length)]];
@@ -445,23 +434,12 @@ const specialCardsMethod = {
     }, 3000);
   },
   wildDraw4(game) {
-    const nextIndex = getNextIndex(game);
-    const nextPlayer = game.players[nextIndex];
-    if (game.currPlayer === 'user') {
-      $('.changeColorPage').removeClass('none');
-      $('.colorBox').on('click', getNewColor);
-    } else {
+    if (game.currPlayer !== 'user') {
       // pc1, pc2
       const newColor = Object.keys(colors)[getRandomNum(Object.keys(colors))];
       game.currCard.color = newColor;
     }
-    //renderDiscardPile(game);
-    // setTimeout(() => {
-    //   renderDrawAndDiscard();
-    //   repeat(4, drawOneCard, nextPlayer);
-    //   renderHand(nextPlayer);
-    //   repeat(2, changePlayer, game);
-    // }, 3000);
+
     renderDrawAndDiscard();
     changePlayer(game);
     repeat(4, drawOneCard, game.currPlayer);
@@ -474,7 +452,6 @@ const specialCardsMethod = {
   },
 };
 
-specialCardsMethod.wild(game);
 /////////////////////////////////////////////////////////////////
 // * GAME FLOW - PC1 / PC2 !! 🦊
 /////////////////////////////////////////////////////////////////
@@ -516,7 +493,7 @@ const finalChangePlayer = (game) => {
 };
 
 const pcTurn = (currPlayer) => {
-  console.log('💻 PC TURN!');
+  console.log('💻');
   const matchingResult = checkPcHand(currPlayer);
 
   //! WHEN PC HAS A CARD 🅾️
@@ -532,7 +509,8 @@ const pcTurn = (currPlayer) => {
     }
 
     game.currCard = chosenCard;
-
+    console.log('PC GOT ', game.currCard.value);
+    console.log('------------------------');
     //! remove chosencard from hand & move to discardpile
     const cardIndexInHand = playerHands[currPlayer].indexOf(chosenCard);
     const card = playerHands[currPlayer].splice(cardIndexInHand, 1);
@@ -545,8 +523,6 @@ const pcTurn = (currPlayer) => {
       renderDrawAndDiscard();
       finalChangePlayer(game);
     }, 5000);
-
-    console.log('🌼 PC CHOICE!!', game.currCard.value);
   } else {
     //! WHEN PC DOESN'T HAVE A CARD ❌
     drawOneCard(currPlayer);
@@ -554,10 +530,10 @@ const pcTurn = (currPlayer) => {
     renderDrawAndDiscard();
     renderHand(currPlayer);
     changePlayer(game);
+    console.log('PC Draw new card ', game.currCard.value);
+    console.log('------------------------');
   }
-  console.log('FLOW FINISH💥');
-  console.log('🌼 Current CARD!!', game.currCard.value);
-  console.log('------------------------');
+
   return setTimeout(() => {
     gameFlow(game);
   }, 9000);
@@ -573,25 +549,24 @@ const handlerUserCardClick = (e) => {
     chosenCard.value === game.currCard.value ||
     chosenCard.color === game.currCard.color
   ) {
-    // if card is valid, i will remove it from userHand and put it back to discardPile
     // Update the currCard
+    // if card is valid, remove it from userHand and put it back to discardPile
     game.currCard = chosenCard;
+    const splicedCard = playerHands.user.splice($cardIndex, 1);
+    board.discardPile.push(splicedCard);
 
+    //! render userHand and discardPile 🎨
+    renderHand('user');
+    renderDrawAndDiscard();
+
+    //TODO BUG
     if (game.currCard.value === 'wild' || game.currCard.value === 'wildDraw4') {
-      showColorChangeModal($cardIndex);
+      showColorChangeModal(game);
     } else {
-      const splicedCard = playerHands.user.splice($cardIndex, 1);
-      board.discardPile.push(splicedCard);
-      //! render userHand and discardPile 🎨
-      renderHand('user');
-      //renderDiscardPile(game);
-      renderDrawAndDiscard();
-      // change player
       finalChangePlayer(game);
 
-      console.log('FLOW FINISH💥');
-      console.log('🌼 USER CHOICE!!', game.currCard.value);
-      console.log('------------------------');
+      console.log('USER GOT: ', game.currCard.value);
+      console.log('------------');
       return gameFlow(game);
     }
   } else {
@@ -609,14 +584,14 @@ const handlerDrawBtnClick = (e) => {
   renderDrawAndDiscard();
 
   changePlayer(game);
-  console.log('FLOW FINISH💥');
-  console.log('🌼 USER DRAW CARD!!', game.currCard.value);
+
+  console.log('USER DRAW CARD: ', game.currCard.value);
   console.log('------------------------');
   return gameFlow(game);
 };
 
 const userTurn = () => {
-  console.log('🧝‍♀️ USER TURN!');
+  console.log('🧝‍♀️ ');
 
   // $('main').on('click', userClick);
   $('.draw__btn').on('click', handlerDrawBtnClick);
@@ -627,8 +602,7 @@ const userTurn = () => {
 // * GAME FLOW!! 🦊
 /////////////////////////////////////////////////////////////////
 const gameFlow = (game) => {
-  console.log('------------------------');
-  console.log('🌿 GAME FLOW!!!', game.currPlayer);
+  console.log('🌿 NEXT: ', game.currPlayer);
 
   //! render 'turn'class to show whoes turn is now.
   renderCurrPlayerTurnClass(game);
@@ -652,7 +626,11 @@ const checkBeginningCard = () => {
     const specialCard = game.currCard.value;
 
     if (specialCard === 'skip') {
-      specialCardsMethod.skip(game);
+      return setTimeout(() => {
+        console.log(`❌ ${game.currPlayer} skipped!`);
+        renderCurrPlayerSkipClass(game);
+        changePlayer(game);
+      }, 2000);
     }
     if (specialCard === 'reverse') {
       specialCardsMethod.reverse(game);
@@ -686,6 +664,9 @@ const startGame = () => {
   //! render currplayer hand 🎨
   renderHand(game.currPlayer);
 
+  setTimeout(() => {
+    gameFlow, 4000;
+  });
   //gameFlow(game);
 };
 
@@ -734,7 +715,6 @@ const main = () => {
   createDeck(board);
   //$('.chooseTurn__btn').on('click', chooseTurn);
   startGame();
-  showColorChangeModal();
 };
 
 $(main);

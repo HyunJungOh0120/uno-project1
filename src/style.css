@@ -401,6 +401,13 @@ button:active {
   border: 8px solid var(--skip);
 }
 
+.skip::before {
+  content: 'SKIP';
+  display: block;
+  color: var(--skip);
+  font-size: 2rem;
+}
+
 .faceDown {
   background-color: darkred;
   border: 2px solid rgb(255, 255, 148);
