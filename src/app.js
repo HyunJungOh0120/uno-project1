@@ -97,8 +97,8 @@ const createDeck = (board) => {
 
 const game = {
   players: ['user', 'pc1', 'pc2'],
-  currPlayer: 'pc1',
-  currIndex: 1,
+  currPlayer: 'user',
+  currIndex: 0,
   nextIndex: null,
   currCard: null, //FIXME
   isPCturn: true,
@@ -439,6 +439,14 @@ const activateSpecialCards = (card) => {
   }
 };
 
+const finalChangePlayer = (game) => {
+  if (typeof game.currCard.value !== 'number') {
+    activateSpecialCards(game.currCard);
+  } else {
+    changePlayer(game);
+  }
+};
+
 const pcTurn = (currPlayer) => {
   const matchingResult = checkPcHand(currPlayer);
   // const matchingResult = [];
@@ -474,22 +482,53 @@ const pcTurn = (currPlayer) => {
     renderDrawPile(board);
     renderHand(currPlayer);
   }
-
-  if (typeof game.currCard.value !== 'number') {
-    activateSpecialCards(game.currCard);
-  } else {
-    changePlayer(game);
-  }
+  finalChangePlayer(game);
 };
 
 const handlerUserCardClick = (e) => {
-  console.log(e.currentTarget);
-  console.log(e.target);
+  const $chosenCard = $(e.currentTarget);
+  if (!$chosenCard.hasClass('userCard')) return;
+  const $cardIndex = $chosenCard.parent().children().index($chosenCard);
+  const chosenCard = playerHands.user[$cardIndex];
+
+  console.log(chosenCard);
+  console.log(game.currCard);
+  if (
+    chosenCard.value === game.currCard.value ||
+    chosenCard.color === game.currCard.color
+  ) {
+    // if card is valid, i will remove it from userHand and put it back to discardPile
+    // Update the currCard
+    game.currCard = chosenCard;
+    const splicedCard = playerHands.user.splice($cardIndex, 1);
+    board.discardPile.push(splicedCard);
+    //! render userHand and discardPile 🎨
+    renderHand('user');
+    renderDiscardPile(game);
+    // change player
+    finalChangePlayer(game);
+
+    return gameFlow(game);
+  } else {
+    console.log('INVALID❌');
+  }
+};
+
+const handlerDrawBtnClick = (e) => {
+  console.log('Draw one card for user');
+  // draw one card
+  drawOneCard('user');
+  changePlayer(game);
+  //! render drawPile, userHand 🎨
+  renderHand('user');
+  renderDrawPile(board);
+  return gameFlow(game);
 };
 
 const userTurn = () => {
   console.log('USER TURN!');
-  $('.userHand').on('click', handlerUserCardClick);
+  $('.draw__btn').on('click', handlerDrawBtnClick);
+  $('.userCard').on('click', handlerUserCardClick);
 };
 
 /////////////////////////////////////////////////////////////////
@@ -506,10 +545,8 @@ const gameFlow = (game) => {
     userTurn();
     console.log('FLOW FINISH💥');
     console.log('------------------------');
-    return;
   }
   if (currPlayer !== 'user') {
-    //! TODO HERE I CAN ADD DELAY OR PAUSE!
     pcTurn(currPlayer);
     console.log('FLOW FINISH💥');
     console.log('------------------------');
