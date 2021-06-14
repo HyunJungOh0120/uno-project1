@@ -352,14 +352,13 @@ const getNewColor = (e) => {
 /////////////////////////////////////////////////////////////////
 // * SPECIAL CARDS!! 🐥
 /////////////////////////////////////////////////////////////////
-//! JUST FOCUS ON SPECIAL CARDS' METHODS
-
 const repeat = (num, what, arg) => {
   for (let i = 0; i < num; i++) {
     what(arg);
   }
 };
 
+//! REVERSE, WILD doesn't have changePlayer option
 const specialCardsMethod = {
   skip(game) {
     repeat(2, changePlayer, game);
@@ -380,12 +379,10 @@ const specialCardsMethod = {
     if (game.currPlayer === 'user') {
       $('.changeColorPage').removeClass('none');
       $('.colorBox').on('click', getNewColor);
-      repeat(2, changePlayer, game);
     } else {
       // pc1, pc2
-      const newColor = game.colors[getRandomNum(game.colors.length)];
+      const newColor = Object.keys(colors)[getRandomNum(Object.keys(colors))];
       game.currCard.color = newColor;
-      repeat(2, changePlayer, game);
     }
   },
   wildDraw4(game) {
@@ -396,7 +393,7 @@ const specialCardsMethod = {
       $('.colorBox').on('click', getNewColor);
     } else {
       // pc1, pc2
-      const newColor = game.colors[getRandomNum(game.colors.length)];
+      const newColor = Object.keys(colors)[getRandomNum(Object.keys(colors))];
       const nextIndex = getNextIndex(game);
       nextPlayer = game.players[nextIndex];
       game.currCard.color = newColor;
@@ -406,21 +403,36 @@ const specialCardsMethod = {
   },
 };
 
-//HERE
-// TODO - jun 14th
-// 1. pc chosen card  is special cards??
-
-// 2. user case
 /////////////////////////////////////////////////////////////////
 // * GAME FLOW - PC1 / PC2 !! 🦊
 /////////////////////////////////////////////////////////////////
-// TODO
-const activateSpecialCards = () => {
-  // If skip => specialCardsMethods  need to evoke that function
+const activateSpecialCards = (game) => {
+  // SKIP, DRAW2, WILD4   HAS CHANGEPLAYER
+  // REVERSE, WILD        NO  CHANGEPLAYER
+  const cardValue = game.currCard.value;
+  if (typeof cardValue === 'number') return;
+  if (cardValue === 'skip') {
+    specialCardsMethod.skip(game);
+  }
+  if (cardValue === 'draw2') {
+    specialCardsMethod.draw2(game);
+  }
+  if (cardValue === 'reverse') {
+    specialCardsMethod.reverse(game);
+    changePlayer(game);
+  }
+  if (cardValue === 'wild') {
+    specialCardsMethod.wild(game);
+    changePlayer(game);
+  }
+  if (cardValue === 'wildDraw4') {
+    specialCardsMethod.wildDraw4(game);
+  }
 };
 
 const pcTurn = (currPlayer) => {
-  const matchingResult = [];
+  const matchingResult = checkPcHand(currPlayer);
+  // const matchingResult = [];
 
   //! WHEN PC HAS A CARD 🅾️
   //* when there are results or is a result
@@ -435,17 +447,20 @@ const pcTurn = (currPlayer) => {
     }
 
     game.currCard = chosenCard;
+    activateSpecialCards(game);
 
-    // if(chosenCard.value)
-    // remove chosencard   to discardpile
+    //! remove chosencard from hand & move to discardpile
     const cardIndexInHand = playerHands[currPlayer].indexOf(chosenCard);
     const card = playerHands[currPlayer].splice(cardIndexInHand, 1);
     board.discardPile.push(card);
 
     //! render currhand and discardpile🎨
-
-    renderHand(currPlayer);
-    renderDiscardPile(game);
+    setTimeout(() => {
+      renderHand(currPlayer);
+      renderDiscardPile(game);
+    }, 2000);
+    // renderHand(currPlayer);
+    // renderDiscardPile(game);
 
     //! WHEN PC DOESN'T HAVE A CARD ❌
   } else {
@@ -455,6 +470,7 @@ const pcTurn = (currPlayer) => {
   }
   console.log('✅ Current Player: ', game.currPlayer);
   console.log('------------------------');
+
   changePlayer(game);
 };
 
@@ -465,22 +481,22 @@ const gameFlow = (game) => {
   console.log('🌿 GAME FLOW!!!', game.currPlayer);
   //! render 'turn'class to show whoes turn is now.
   renderCurrPlayerTurnClass(game);
-  // if top card is skip or reverse or draw2, do sth.
   // this will be repeated during whole game session.
-
-  // if currPlayer is pc1 or pc2
   const currPlayer = game.currPlayer;
+
   if (currPlayer === 'user') {
     console.log('USER TURN!');
     return;
   }
   if (currPlayer !== 'user') {
+    //! TODO HERE I CAN ADD DELAY OR PAUSE!
     pcTurn(currPlayer);
-
-    console.log('FLOW FINISH💥 ');
-
-    return gameFlow(game);
+    console.log('FLOW FINISH💥');
   }
+  //return gameFlow(game);
+  setTimeout(() => {
+    gameFlow(game);
+  }, 3000);
 };
 
 /////////////////////////////////////////////////////////////////
