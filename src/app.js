@@ -97,8 +97,8 @@ const createDeck = () => {
 
 const game = {
   players: ['user', 'pc1', 'pc2'],
-  currPlayer: 'pc2',
-  currIndex: 2,
+  currPlayer: 'pc1',
+  currIndex: 1,
   nextIndex: null,
   currCard: null, //FIXME
   isSpecialValid: false,
@@ -120,27 +120,27 @@ const board = {
 // * GAME PLAYER FLOW 🦄
 ///////////////////////////////////////////////////////////////
 const getRandomNum = (limit) => Math.floor(Math.random() * limit);
-const setCurrIndex = () => {
+const setCurrIndex = (game) => {
   game.currIndex = game.players.indexOf(game.currPlayer);
 };
 
 // In case of skip, reverse, I need to make a function to get NextIndex and  get the index as return.
-const getNextIndex = () => {
+const getNextIndex = (game) => {
   const nextIndex =
     game.currIndex === game.players.length - 1 ? 0 : game.currIndex + 1;
   return nextIndex;
 };
 
-const changePlayer = () => {
+const changePlayer = (game) => {
   // Before Change
-  game.nextPlayer = game.players[getNextIndex()];
+  game.nextPlayer = game.players[getNextIndex(game)];
 
   // Changing
   game.currPlayer = game.nextPlayer;
   game.currIndex = game.nextIndex;
 
   // After Change
-  game.nextIndex = getNextIndex();
+  game.nextIndex = getNextIndex(game);
 };
 
 /////////////////////////////////////////////////////////////////
@@ -245,7 +245,7 @@ const renderHand = (player) => {
   if (player === 'user') $('.userHand .card').addClass('userCard');
 };
 
-const renderDrawPile = () => {
+const renderDrawPile = (board) => {
   const template = board.drawPile.map((card) => getPcCardTemplate()).join(' ');
 
   $('.draw__cards').html(template);
@@ -253,14 +253,14 @@ const renderDrawPile = () => {
   $('.draw__remain-num').text(board.drawPile.length);
 };
 
-const renderDiscardPile = () => {
+const renderDiscardPile = (game) => {
   //currCard one card is enough
   const template = getCardTemplate(game.currCard);
   $('.discard').html(template);
   $('.discard .card').addClass('discard__card');
 };
 
-const renderCurrPlayerTurnClass = () => {
+const renderCurrPlayerTurnClass = (game) => {
   $('.hand').removeClass('turn');
   $(`.${game.currPlayer}Hand`).addClass('turn');
 };
@@ -296,7 +296,7 @@ const remainingCardsToDrawPile = () => {
   board.drawPile = board.deck.splice(0);
 
   //! 🎨 render
-  renderDrawPile();
+  renderDrawPile(board);
 };
 
 const drawOneCard = (pushTo) => {
@@ -305,7 +305,7 @@ const drawOneCard = (pushTo) => {
   playerHands[pushTo].push(drawCard);
 
   //! render drawPile🎨
-  renderDrawPile();
+  renderDrawPile(board);
 
   return drawCard;
 };
@@ -316,7 +316,7 @@ const flipOneDrawPileToDiscardPile = () => {
 
   game.currCard = flippedCard;
   //! render 🎨
-  renderDiscardPile();
+  renderDiscardPile(game);
 
   //TODO;
   //! maybe i can add some css animation here or give timeout.
@@ -361,127 +361,80 @@ const getNewColor = (e) => {
 /////////////////////////////////////////////////////////////////
 //! JUST FOCUS ON SPECIAL CARDS' METHODS
 
-const repeat = (num, what) => {
+const repeat = (num, what, arg) => {
   for (let i = 0; i < num; i++) {
-    what();
+    what(arg);
   }
 };
 
 const specialCardsMethod = {
-  skip() {
-    repeat(2, changePlayer);
+  skip(game) {
+    repeat(2, changePlayer, game);
   },
-  draw2() {
-    const nextIndex = getNextIndex();
+  draw2(game) {
+    const nextIndex = getNextIndex(game);
     const nextPlayer = game.players[nextIndex];
     drawOneCard(nextPlayer);
-    repeat(2, changePlayer);
+    repeat(2, changePlayer, game);
   },
-  reverse() {
+  reverse(game) {
     const reversedPlayers = game.players.reverse();
     game.players = reversedPlayers;
-    setCurrIndex();
+    setCurrIndex(game);
   },
-  wild() {
+  wild(game) {
     if (game.currPlayer === 'user') {
       $('.changeColorPage').removeClass('none');
       $('.colorBox').on('click', getNewColor);
-      repeat(2, changePlayer);
+      repeat(2, changePlayer, game);
     } else {
       // pc1, pc2
       const newColor = game.colors[getRandomNum(game.colors.length)];
       game.currCard.color = newColor;
-      repeat(2, changePlayer);
+      repeat(2, changePlayer, game);
     }
   },
-  wildDraw4() {
+  wildDraw4(game) {
+    // TODO
+    let nextPlayer;
     if (game.currPlayer === 'user') {
       $('.changeColorPage').removeClass('none');
       $('.colorBox').on('click', getNewColor);
-      repeat(4, drawOneCard.bind(nextPlayer));
-      repeat(2, changePlayer);
     } else {
       // pc1, pc2
       const newColor = game.colors[getRandomNum(game.colors.length)];
-      const nextIndex = getNextIndex();
-      const nextPlayer = game.players[nextIndex];
+      const nextIndex = getNextIndex(game);
+      nextPlayer = game.players[nextIndex];
       game.currCard.color = newColor;
-
-      repeat(4, drawOneCard.bind(nextPlayer));
-      repeat(2, changePlayer);
     }
+    repeat(4, drawOneCard, nextPlayer);
+    repeat(2, changePlayer, game);
   },
-};
-
-const skip = () => {
-  // CURRENT!
-  // curIndex = 2
-  // currPlayer = pc2
-  // currCard.value = 'skip'
-
-  changePlayer();
-  changePlayer();
-};
-
-const draw2 = () => {
-  const nextIndex = getNextIndex();
-  const nextPlayer = game.players[nextIndex];
-  drawOneCard(nextPlayer);
-  ////
-  skip();
-};
-
-const reverse = () => {
-  const reversedPlayers = game.players.reverse();
-  game.players = reversedPlayers;
-  setCurrIndex(); // set the current player's index in reversed players array.
-};
-
-const wild = () => {
-  if (game.currPlayer === 'user') {
-    $('.changeColorPage').removeClass('none');
-    $('.colorBox').on('click', getNewColor);
-    skip();
-  } else {
-    // pc1, pc2
-    const newColor = game.colors[getRandomNum(game.colors.length)];
-    game.currCard.color = newColor;
-    skip();
-  }
-};
-
-const wildDraw4 = () => {
-  if (game.currPlayer === 'user') {
-    $('.changeColorPage').removeClass('none');
-    $('.colorBox').on('click', getNewColor);
-    drawOneCard(nextPlayer);
-    drawOneCard(nextPlayer);
-    drawOneCard(nextPlayer);
-    drawOneCard(nextPlayer);
-  } else {
-    // pc1, pc2
-    const newColor = game.colors[getRandomNum(game.colors.length)];
-    const nextIndex = getNextIndex();
-    const nextPlayer = game.players[nextIndex];
-    game.currCard.color = newColor;
-    drawOneCard(nextPlayer);
-    drawOneCard(nextPlayer);
-    drawOneCard(nextPlayer);
-    drawOneCard(nextPlayer);
-  }
 };
 
 //HERE
+// TODO - jun 14th
+// 1. pc chosen card  is special cards??
+
+// 2. user case
 /////////////////////////////////////////////////////////////////
 // * GAME FLOW - PC1 / PC2 !! 🦊
 /////////////////////////////////////////////////////////////////
+// TODO
+const activateSpecialCards = () => {
+  // If skip => specialCardsMethods  need to evoke that function
+};
+
 const pcTurn = (currPlayer) => {
   // check pc hand first if it has matched card with curr card
   const matchingResult = checkPcHand(currPlayer);
-  let chosenCard;
 
+  console.log('matchingResult', matchingResult);
+
+  //! WHEN PC HAS A CARD 🅾️
   //* when there are results or is a result
   if (matchingResult) {
+    let chosenCard;
     if (matchingResult.length === 1) {
       chosenCard = matchingResult[0];
     }
@@ -489,22 +442,31 @@ const pcTurn = (currPlayer) => {
       const randomIndex = getRandomNum(matchingResult.length);
       chosenCard = matchingResult[randomIndex];
     }
+    console.log('prevCurrCard', game.currCard);
     game.currCard = chosenCard;
+
+    console.log('chosenCard', chosenCard ?? chosenCard);
+
+    // if(chosenCard.value)
     // remove chosencard   to discardpile
     const cardIndexInHand = playerHands[currPlayer].indexOf(chosenCard);
     const card = playerHands[currPlayer].splice(cardIndexInHand, 1);
     board.discardPile.push(card);
 
-    //! render 🎨
-    renderHand(currPlayer);
-    renderDiscardPile(game.currCard);
+    //! render currhand and discardpile🎨
+    setTimeout(() => {
+      renderHand(currPlayer);
+      renderDiscardPile(game);
+    }, 2000);
 
-    // render currhand and discardpile
+    //! WHEN PC DOESN'T HAVE A CARD ❌
   } else {
     drawOneCard(currPlayer);
-    renderDrawPile();
+    renderDrawPile(board);
   }
-  changePlayer();
+  console.log('beforeChangePlayer', game);
+  changePlayer(game);
+  console.log('afterChangePlayer', game);
 };
 
 /////////////////////////////////////////////////////////////////
@@ -517,10 +479,10 @@ const gameFlow = () => {
 
   // if currPlayer is pc1 or pc2
   const currPlayer = game.currPlayer;
-  if (currPlayer === 'pc1' || currPlayer === 'pc2') {
-    renderCurrPlayerTurnClass();
+
+  if (currPlayer !== 'user') {
+    renderCurrPlayerTurnClass(game);
     pcTurn(currPlayer);
-    console.log(game);
   }
   // return gameFlow();
 };
@@ -533,10 +495,10 @@ const checkBeginningCard = () => {
     const specialCard = game.currCard.value;
 
     if (specialCard === 'skip') {
-      specialCardsMethod.skip();
+      specialCardsMethod.skip(game);
     }
     if (specialCard === 'reverse') {
-      specialCardsMethod.reverse();
+      specialCardsMethod.reverse(game);
     }
     if (specialCard === 'draw2') {
       drawOneCard(game.currPlayer);
@@ -560,7 +522,7 @@ const startGame = () => {
   }
 
   //! render turn 🎨
-  renderCurrPlayerTurnClass();
+  renderCurrPlayerTurnClass(game);
 
   //* Check beginning card!
   checkBeginningCard();
@@ -598,7 +560,7 @@ const chooseTurn = (e) => {
 
   //! Update the game status.
   game.currPlayer = highest.player;
-  setCurrIndex();
+  setCurrIndex(game);
 
   //! GAME START!!
   setTimeout(() => {
