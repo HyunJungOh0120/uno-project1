@@ -441,8 +441,6 @@ const specialCardsMethod = {
   },
 };
 
-// special methods has settimeout for 3000 ms
-// it means i shouldnt do anything for 3000 ms
 const activateSpecialCards = (game) => {
   // SKIP, DRAW2, WILD4   HAS CHANGEPLAYER
   // REVERSE, WILD        NO  CHANGEPLAYER, no gameflow
@@ -587,11 +585,14 @@ const gameFlow = (game) => {
 
   if (game.isSkipped) {
     game.isSkipped = false;
-
+    changePlayer(game);
     console.log(`After skip: next is : ${game.currPlayer}`);
 
     return setTimeout(() => {
-      pcTurn();
+      if (!game.isSkipped) {
+        $('.hand').removeClass('skip');
+      }
+      gameFlow(game);
     }, DELAY);
   }
   //! render 'turn'class to show whoes turn is now.
@@ -618,6 +619,7 @@ const checkBeginningCard = () => {
 
     if (specialCard === 'skip') {
       console.log(`❌ ${game.currPlayer} skipped!`);
+      game.isSkipped = true;
       toggleCurrPlayerSkipClass(game);
       changePlayer(game);
     }
