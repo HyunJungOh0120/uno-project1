@@ -244,8 +244,10 @@ const renderHand = (player) => {
 
   if (player === 'user') {
     $('.userHand .card').addClass('userCard');
-    $('.userCard:hover').css('transform', 'translateY(-1rem)');
   }
+  $('.userCard').on('mouseover', () => {
+    $(this).css('transform', 'translateY(-1rem');
+  });
 };
 
 const renderDrawPile = (board) => {
@@ -721,7 +723,7 @@ const chooseTurn = (e) => {
   setTimeout(() => {
     $('.choose__page').addClass('none');
     startGame();
-  }, 5000);
+  }, 8000);
 };
 
 /////////////////////////////////////////////////////////////////

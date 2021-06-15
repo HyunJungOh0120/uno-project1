@@ -19,13 +19,13 @@
   </head>
   <body>
     <button class="reset__btn">RESET</button>
-    <div class="choose__page none">
-      <button class="btn chooseTurn__btn">PICK A CARD</button>
+    <div class="pop-up choose__page none">
+      <button class="chooseTurn__btn">PICK A CARD</button>
       <p class="choose__msg none">
         PC2 has the highest value card! <br />
         PC2 will be the starter!
       </p>
-      <div class="choose__container">
+      <div class="pop-up__container choose__container">
         <div class="choose__player">
           <p>USER</p>
           <div class="chooseBox choose__user--card"></div>
@@ -47,6 +47,11 @@
         </div>
       </div>
     </div>
+
+    <div class="pop-up gameOver__page">
+      <div class="pop-up__container gameOver__container">Congratulation!</div>
+    </div>
+
     <div class="changeColorPage none">
       <div class="changeModal">
         <h3>Choose and click a new color</h3>
@@ -61,13 +66,13 @@
 
     <main class="board">
       <section class="side">
-        <div class="hand pc1Hand skip">
-          <div class="card">
+        <div class="hand pc1Hand">
+          <!-- <div class="card">
             <div class="card__circle faceDown">UNO</div>
           </div>
           <div class="card">
             <div class="card__circle faceDown">UNO</div>
-          </div>
+          </div> -->
         </div>
       </section>
 
@@ -76,12 +81,12 @@
           <div class="pile draw">
             <button class="draw__btn">DRAW</button>
             <div class="draw__cards">
-              <div class="card draw__card">
+              <!-- <div class="card draw__card">
                 <div class="card__circle faceDown">UNO</div>
-              </div>
-              <div class="card draw__card">
+              </div> -->
+              <!-- <div class="card draw__card">
                 <div class="card__circle faceDown">UNO</div>
-              </div>
+              </div> -->
             </div>
             <p class="draw__remain-num">0</p>
           </div>
@@ -95,43 +100,7 @@
           </div>
         </div>
 
-        <div class="hand userHand turn">
-          <div class="card userCard">
-            <p class="card__value card__value--top">5</p>
-            <div class="card__circle"></div>
-            <p class="card__value card__value--main">5</p>
-            <p class="card__value card__value--bottom">5</p>
-          </div>
-          <div class="card userCard">
-            <p class="card__value card__value--top">5</p>
-            <div class="card__circle"></div>
-            <p class="card__value card__value--main">5</p>
-            <p class="card__value card__value--bottom">5</p>
-          </div>
-          <div class="card userCard">
-            <p class="card__value card__value--top">5</p>
-            <div class="card__circle"></div>
-            <p class="card__value card__value--main">5</p>
-            <p class="card__value card__value--bottom">5</p>
-          </div>
-          <div class="card userCard">
-            <p class="card__value card__value--top">5</p>
-            <div class="card__circle"></div>
-            <p class="card__value card__value--main">5</p>
-            <p class="card__value card__value--bottom">5</p>
-          </div>
-          <div class="card userCard">
-            <p class="card__value card__value--top">5</p>
-            <div class="card__circle"></div>
-            <p class="card__value card__value--main">5</p>
-            <p class="card__value card__value--bottom">5</p>
-          </div>
-          <div class="card userCard">
-            <p class="card__value card__value--top">5</p>
-            <div class="card__circle"></div>
-            <p class="card__value card__value--main">5</p>
-            <p class="card__value card__value--bottom">5</p>
-          </div>
+        <div class="hand userHand">
           <div class="card userCard">
             <p class="card__value card__value--top">5</p>
             <div class="card__circle"></div>
