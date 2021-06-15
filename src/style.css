@@ -7,7 +7,7 @@
   --turn-shadow: 1px 2px 6px 20px rgb(255, 238, 181);
   --turn: rgb(255, 248, 154);
   --skip: rgb(131, 0, 0);
-  --skip-shadow: 1px 2px 6px 20px rgb(146, 0, 0);
+  --skip-shadow: 1px 2px 6px 2px rgb(146, 0, 0);
   --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.521), 0 1px 2px rgba(0, 0, 0, 0.24);
   --board-shadow: 0 2px 4px 2px rgba(139, 115, 115, 0.9);
   --discard--color: rgb(59, 38, 38);
@@ -396,17 +396,17 @@ button:active {
   box-shadow: var(--turn-shadow);
   border: 8px solid var(--turn);
 }
-/* .skip {
+.skip {
   box-shadow: var(--skip-shadow);
   border: 8px solid var(--skip);
-} */
+}
 
-.skip::before {
+/* .skip::before {
   content: 'SKIP';
   display: block;
   color: var(--skip);
   font-size: 2rem;
-}
+} */
 
 .faceDown {
   background-color: darkred;
