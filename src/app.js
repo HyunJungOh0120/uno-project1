@@ -102,7 +102,7 @@ const game = {
   nextPlayer: null,
   nextIndex: 1,
   currCard: null, //FIXME
-  isPCturn: true,
+  winner: null,
   isSkipped: false,
 };
 
@@ -208,7 +208,7 @@ const getCardTemplate = (card) => {
 const getPcCardTemplate = () => {
   return `
         <div class="card">
-            <div class="card__circle faceDown"></div>
+            <div class="card__circle faceDown">UNO</div>
         </div>
     `;
 };
@@ -216,6 +216,7 @@ const getPcCardTemplate = () => {
 /////////////////////////////////////////////////////////////////
 // * RENDER CARDS 🎨
 /////////////////////////////////////////////////////////////////
+
 const renderChooseTurn = (card) => {
   // render to $(`.choose__user--card`)
   const template = getCardTemplate(card);
@@ -233,7 +234,18 @@ const renderHand = (player) => {
     .join('');
   $(`.${player}Hand`).html(template);
 
-  if (player === 'user') $('.userHand .card').addClass('userCard');
+  for (let i = 0; i <= playerHands[player].length; i++) {
+    // console.log($(`.card:nth-child(${i})`));
+
+    $(`.${player}Hand .card:nth-child(${i})`)
+      .css('transform', `translateX(-${(i - 1) * 3}rem)`)
+      .css('z-index', i);
+  }
+
+  if (player === 'user') {
+    $('.userHand .card').addClass('userCard');
+    $('.userCard:hover').css('transform', 'translateY(-1rem)');
+  }
 };
 
 const renderDrawPile = (board) => {
@@ -241,6 +253,15 @@ const renderDrawPile = (board) => {
 
   $('.draw__cards').html(template);
   $('.draw__cards .card').addClass('draw__card');
+
+  for (let i = 0; i <= 5; i++) {
+    $(`.draw__card:nth-child(${i})`)
+      .css(
+        'transform',
+        `translate(-${(i - 0) * 0.06}rem, -${(i - 1) * 0.4}rem)`
+      )
+      .css('z-index', i);
+  }
   $('.draw__remain-num').text(board.drawPile.length);
 };
 
@@ -569,12 +590,17 @@ const userTurn = () => {
 /////////////////////////////////////////////////////////////////
 // * GAME FLOW!! 🦊
 /////////////////////////////////////////////////////////////////
+const gameOver = (game) => {
+  console.log(`${game.winner} won!!!!!`);
+};
+
 const gameFlow = (game) => {
   // TODO 6월 15일
   //* game end
-  for (const hand in playerHands) {
-    if (playerHands[hand].length === 0) {
-      console.log('GAME OVER', hand, 'won!');
+  for (const player in playerHands) {
+    if (playerHands[player].length === 0) {
+      game.winner = player;
+      gameOver(game);
       return;
     }
   }

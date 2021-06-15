@@ -1,16 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;900&display=swap');
 
 :root {
   --main-white: rgb(236, 236, 236);
-  --board-color: rgb(180, 180, 180);
-  --hand-color: rgb(59, 75, 32);
-  --turn-shadow: 1px 2px 6px 20px rgb(255, 238, 181);
+  --board-color: linear-gradient(to top, #9b8c75, #c4aa9b);
+  --hand-color: #192b22;
+  --turn-shadow: 1px 9px 27px 10px rgb(255, 238, 181);
   --turn: rgb(255, 248, 154);
   --skip: rgb(131, 0, 0);
   --skip-shadow: 1px 2px 6px 2px rgb(146, 0, 0);
-  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.521), 0 1px 2px rgba(0, 0, 0, 0.24);
-  --board-shadow: 0 2px 4px 2px rgba(139, 115, 115, 0.9);
-  --discard--color: rgb(59, 38, 38);
+  --card-shadow: 0 0.18rem 0.2rem rgba(0, 0, 0, 0.521),
+    0 0.18rem 0.2rem rgba(0, 0, 0, 0.24);
+  --board-shadow: 0 2px 4px 2px rgba(27, 24, 24, 0.9);
+  --discard--color: rgb(128, 60, 21);
   --font-color: rgb(211, 211, 211);
   --red: rgb(230, 0, 0);
   --yellow: rgb(255, 208, 0);
@@ -18,20 +20,27 @@
   --blue: rgb(0, 35, 230);
   --btn-color: rgb(221, 77, 51);
   --btn-disabled: rgb(156, 107, 99);
+  --table: rgb(48, 22, 22);
+  --main-black-color: rgb(26, 26, 26);
 }
 
 * {
   margin: 0;
   padding: 0;
+  border: 0px;
   box-sizing: border-box;
 }
 
 body {
   height: 100vh;
 
-  padding: 2rem;
+  font-size: 11px;
+  padding: 0 0 2rem 0;
   background-color: var(--main-white);
   font-family: 'Montserrat', sans-serif;
+  perspective: 400px;
+  background: linear-gradient(#eeeeee, #747474);
+  color: var(--main-black-color);
 }
 
 section {
@@ -110,26 +119,34 @@ button:active {
 /* //////////////////////////////////////////////////////////// */
 .board {
   position: relative;
-  max-width: 100rem;
-  background-color: var(--board-color);
+
+  min-width: 80rem;
+  background: var(--board-color);
   height: 100%;
-  padding: 1rem;
+  padding: 1rem 1.3rem;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   border-radius: 1rem;
-  box-shadow: var(--board-shadow);
-  overflow-x: hidden;
+
+  overflow: hidden;
+  transform: rotateX(10deg);
+  /* border: 1.5rem solid var(--table);
+  border-right: 5rem solid var(--table);
+  border-left: 5rem solid var(--table); */
 }
 
 .side {
-  width: 20%;
+  width: 12%;
   position: relative;
 }
 
 .middle {
   padding: 2rem 0.3rem;
-  width: 80%;
+  width: 75%;
+  width: 47rem;
+  margin: 1.2rem;
 }
 
 .piles {
@@ -138,6 +155,8 @@ button:active {
   background-color: var(--discard--color);
   width: 100%;
   margin-bottom: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0px 1px 1px 1px rgb(63, 41, 78);
 }
 
 .pile {
@@ -149,6 +168,7 @@ button:active {
 .draw {
   width: 40%;
   flex-direction: column;
+  justify-content: center;
 }
 
 .draw__cards {
@@ -156,12 +176,13 @@ button:active {
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
   position: relative;
 }
 
 .draw__remain-num {
   color: var(--font-color);
-  margin-top: 0.2rem;
+  margin-top: 0.6rem;
 }
 
 .discard {
@@ -174,17 +195,18 @@ button:active {
 /* //////////////////////////////////////////////////////////// */
 
 .hand {
-  width: 41.5rem;
+  width: 38rem;
   height: 9rem;
-  background-color: var(--hand-color);
-  overflow-x: auto;
+  background: var(--hand-color);
+  overflow-x: hidden;
   padding: 0 1rem;
   border-radius: 0.4rem;
-  box-shadow: 1px 1px 1px 1px rgb(92, 58, 58);
+  box-shadow: 1px 1px 1px 3px rgb(13, 32, 26);
 
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  position: relative;
 }
 
 .userHand {
@@ -193,12 +215,10 @@ button:active {
 }
 
 .pc1Hand {
-  position: absolute;
   transform: rotate(90deg);
 }
 
 .pc2Hand {
-  position: absolute;
   transform: rotate(270deg);
 }
 /* //////////////////////////////////////////////////// */
@@ -208,7 +228,8 @@ button:active {
 .card {
   width: 5rem;
   height: 7rem;
-
+  min-width: 5rem;
+  min-height: 7rem;
   color: var(--main-white);
   background-color: rgb(24, 24, 24);
   border: 0.3rem solid rgb(255, 255, 255);
@@ -237,6 +258,10 @@ button:active {
   transform: skew(-30deg);
   top: 0rem;
   bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: yellow;
 }
 
 .wild {
@@ -244,7 +269,7 @@ button:active {
   height: 47%;
   width: 47%;
   background-color: black;
-  color: black;
+  color: var(--main-black-color);
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -258,7 +283,7 @@ button:active {
 
 .card__value--main {
   font-size: 3em;
-  color: black;
+  color: var(--main-black-color);
   z-index: 1;
   font-style: italic;
 }
@@ -272,19 +297,29 @@ button:active {
 
 .draw__card {
   width: 8rem;
-  height: 12rem;
+  min-width: 8rem;
+  height: 11rem;
+  min-height: 11rem;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .userCard {
   width: 8rem;
+  min-width: 8rem;
   height: 11rem;
+  min-height: 11rem;
   cursor: pointer;
   transition: all 0.4s;
+  flex-wrap: nowrap;
 }
+/* 
+.card:nth-child(2) {
+  transform: translatex(-50px);
+}
+
+.draw__card:nth-child(2) {
+  transform: translateY(-6px);
+} */
 
 .userCard:hover {
   transform: translateY(-1rem);
@@ -396,17 +431,25 @@ button:active {
   box-shadow: var(--turn-shadow);
   border: 8px solid var(--turn);
 }
-.skip {
-  box-shadow: var(--skip-shadow);
-  border: 8px solid var(--skip);
+.skip::after {
+  content: 'skip';
+  background: rgba(173, 173, 173, 0.637);
+  /* background-image: url('https://png.pngtree.com/png-clipart/20190614/original/pngtree-vector-national-speed-limit-applies-icon-png-image_3788194.jpg'); */
+  background-position: center;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4rem;
+  font-family: 'Cairo', sans-serif;
+  z-index: 20;
 }
-
-/* .skip::before {
-  content: 'SKIP';
-  display: block;
-  color: var(--skip);
-  font-size: 2rem;
-} */
 
 .faceDown {
   background-color: darkred;
