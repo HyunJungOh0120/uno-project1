@@ -1,0 +1,104 @@
+/*--------------------------------------*/
+/*  * EXTRA */
+/*--------------------------------------*/
+
+.changeColorPage {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(59, 59, 59, 0.568);
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.changeModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  padding: 2rem;
+  box-shadow: var(--board-shadow);
+  border-radius: 1rem;
+  color: var(--main-black-color);
+}
+
+.colorBox {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: 20rem;
+  width: 40rem;
+
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+#red {
+  background-color: var(--red);
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+#yellow {
+  background-color: var(--yellow);
+}
+
+#green {
+  background-color: var(--green);
+}
+
+#blue {
+  background-color: var(--blue);
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.transparent {
+  opacity: 0;
+}
+
+.none {
+  display: none;
+}
+
+.turn {
+  box-shadow: var(--turn-shadow);
+  border: 8px solid var(--turn);
+}
+
+.skip {
+  border: rgb(228, 34, 0) solid 20px;
+}
+
+.skip::after {
+  content: 'skip';
+  background: rgba(212, 212, 212, 0.637);
+  background-position: center;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: rgb(107, 21, 6);
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4rem;
+  font-family: 'Cairo', sans-serif;
+  font-weight: bold;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.faceDown {
+  background-color: darkred;
+  border: 2px solid rgb(255, 255, 148);
+}

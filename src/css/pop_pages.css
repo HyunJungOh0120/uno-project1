@@ -1,0 +1,99 @@
+/*--------------------------------------*/
+/* *  CHOOSE TURN PAGE  */
+/*--------------------------------------*/
+.pop-up {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  background-color: var(--main-white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pop-up__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 42rem;
+  padding: 1rem;
+
+  box-shadow: 1px 14px 4px rgba(85, 49, 49, 0.5);
+  border-radius: 1rem;
+}
+
+.chooseTurn__btn {
+  background: red;
+  padding: 1rem;
+  font-size: 1.5rem;
+}
+
+.choose__player {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.choose__player > p {
+  font-size: 2rem;
+}
+
+.chooseBox {
+  height: 17rem;
+  width: 12rem;
+  border-radius: 1rem;
+
+  background: rgba(255, 234, 234, 0.438);
+  box-shadow: inset 0 0 14px 0px rgba(253, 114, 114, 0.5);
+}
+
+.choose__msg {
+  font-family: 'Cairo', sans-serif;
+  font-size: 1.5rem;
+  color: var(--hand-color);
+  text-align: center;
+}
+
+/*--------------------------------------*/
+/* *  GAME-OVER  */
+/*--------------------------------------*/
+.gameOver__page {
+  background: rgba(245, 245, 245, 0.534);
+}
+
+.gameOver__btn {
+  color: var(--main-black-color);
+  font-size: 2rem;
+}
+
+.gameOver__container {
+  font-size: 70rem;
+}
+
+/* ////////////////////////////////////////////// */
+/*  * BUTTON */
+/* ////////////////////////////////////////////// */
+.draw__btn {
+  height: 3rem;
+  width: 7rem;
+  margin-bottom: 2rem;
+  background-color: var(--btn-color);
+  border: none;
+  box-shadow: 1px 3px 3px rgb(73, 16, 16);
+  font-size: 1rem;
+}
+
+.reset__btn {
+  color: grey;
+  background-color: black;
+  padding: 1rem;
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  top: 0;
+}

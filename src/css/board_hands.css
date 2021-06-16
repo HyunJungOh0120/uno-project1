@@ -1,0 +1,104 @@
+/*--------------------------------------*/
+/* *  BOARD  */
+/*--------------------------------------*/
+.board {
+  position: relative;
+
+  min-width: 80rem;
+  background: var(--board-color);
+  height: 100%;
+  padding: 1rem 1.3rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+
+  overflow: hidden;
+  transform: rotateX(10deg);
+}
+
+.side {
+  width: 12%;
+  position: relative;
+}
+
+.middle {
+  padding: 2rem 0.3rem;
+  width: 75%;
+  width: 47rem;
+  margin: 1.2rem;
+}
+
+.piles {
+  display: flex;
+  height: 25rem;
+  background-color: var(--discard--color);
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0px 1px 1px 1px rgb(63, 41, 78);
+}
+
+.pile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.draw {
+  width: 40%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.draw__cards {
+  height: 12rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.draw__remain-num {
+  color: var(--font-color);
+  margin-top: 0.6rem;
+}
+
+.discard {
+  width: 60%;
+  margin-left: 2rem;
+}
+
+/*--------------------------------------*/
+/* * HAND  */
+/*--------------------------------------*/
+
+.hand {
+  width: 38rem;
+  height: 9rem;
+  background: var(--hand-color);
+  overflow-x: hidden;
+  padding: 0 1rem;
+  border-radius: 0.4rem;
+  box-shadow: 0 -2px 1px 3px rgb(13, 32, 26);
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+}
+
+.userHand {
+  width: 100%;
+  height: 15rem;
+}
+
+.pc1Hand {
+  transform: rotate(90deg);
+}
+
+.pc2Hand {
+  transform: rotate(270deg);
+}

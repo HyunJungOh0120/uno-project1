@@ -1,0 +1,115 @@
+/*--------------------------------------*/
+/* FONTS */
+/*--------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;900&display=swap');
+
+/*--------------------------------------*/
+/* GAME ELEMENTS */
+/*--------------------------------------*/
+@import url('./board_hands.css');
+@import url('./cards.css');
+
+/*--------------------------------------*/
+/* POPUP PAGES & EXTRA */
+/*--------------------------------------*/
+@import url('./pop_pages.css');
+@import url('./extra.css');
+
+/*--------------------------------------*/
+/*--------------------------------------*/
+:root {
+  --main-white: rgb(236, 236, 236);
+  --board-color: linear-gradient(to top, #9b8c75, #c4aa9b);
+  --hand-color: #192b22;
+  --turn-shadow: 1px 9px 27px 30px rgb(255, 238, 181);
+  --turn: rgb(253, 249, 184);
+  --skip: rgb(131, 0, 0);
+  --skip-shadow: 1px 2px 6px 2px rgb(146, 0, 0);
+  --card-shadow: 0 0.18rem 0.2rem rgba(0, 0, 0, 0.521),
+    0 0.18rem 0.2rem rgba(0, 0, 0, 0.24);
+  --board-shadow: 0 2px 4px 2px rgba(27, 24, 24, 0.9);
+  --discard--color: rgb(128, 60, 21);
+  --font-color: rgb(211, 211, 211);
+  --red: rgb(230, 0, 0);
+  --yellow: rgb(255, 208, 0);
+  --green: rgb(7, 170, 56);
+  --blue: rgb(0, 35, 230);
+  --btn-color: rgb(221, 77, 51);
+  --btn-disabled: rgb(156, 107, 99);
+  --table: rgb(48, 22, 22);
+  --main-black-color: rgb(26, 26, 26);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+
+  font-size: 13px;
+  padding: 0 0 2rem 0;
+  background-color: var(--main-white);
+  font-family: 'Montserrat', sans-serif;
+  perspective: 400px;
+  background: linear-gradient(#eeeeee, #747474);
+  color: var(--main-black-color);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+div {
+  display: block;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 0.4rem;
+  text-transform: uppercase;
+  color: var(--main-white);
+}
+button:active {
+  transform: scale(0.9);
+}
+
+/*--------------------------------------*/
+/*  * ANIMATION*/
+/*--------------------------------------*/
+
+@-webkit-keyframes slide-left {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  100% {
+    -webkit-transform: translateX(-100px);
+    transform: translateX(-100px);
+  }
+}
+@keyframes slide-left {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  100% {
+    -webkit-transform: translateX(-100px);
+    transform: translateX(-100px);
+  }
+}
+
+/*--------------------------------------*/
+/*  * MEDIA QUERY
+/*--------------------------------------*/
