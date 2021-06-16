@@ -3,7 +3,7 @@
 /*--------------------------------------*/
 .pop-up {
   position: absolute;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   top: 0;
   left: 0;
@@ -63,16 +63,11 @@
 /* *  GAME-OVER  */
 /*--------------------------------------*/
 .gameOver__page {
-  background: rgba(245, 245, 245, 0.534);
-}
-
-.gameOver__btn {
-  color: var(--main-black-color);
-  font-size: 2rem;
+  background: rgba(248, 248, 248, 0.781);
 }
 
 .gameOver__container {
-  background-color: var(--main-white);
+  background-color: var(--main-black-color);
 }
 
 .gameOver__texts {
@@ -80,10 +75,9 @@
   width: 100%;
   justify-content: space-between;
   font-size: 4rem;
-  /* Fallback: Set a background color. */
+
   background-color: #ca4246;
 
-  /* Create the gradient. */
   background-image: linear-gradient(
     45deg,
     #ca4246 16.666%,
@@ -102,28 +96,25 @@
   background-repeat: repeat;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: rainbow-text-simple-animation-rev 0.75s ease forwards;
+  animation: rainbow-text-simple-animation-rev 0.2s ease forwards;
 }
 
-#gameOver__winner {
-}
-
-/* ////////////////////////////////////////////// */
+/*--------------------------------------*/
 /*  * BUTTON */
-/* ////////////////////////////////////////////// */
+/*--------------------------------------*/
 .draw__btn {
   height: 3rem;
   width: 7rem;
   margin-bottom: 2rem;
   background-color: var(--btn-color);
   border: none;
-  box-shadow: 1px 3px 3px rgb(73, 16, 16);
+  box-shadow: var(--draw-btn-shadow);
   font-size: 1rem;
 }
 
 .reset__btn {
   color: grey;
-  background-color: black;
+  background-color: var(--main-black-color);
   padding: 1rem;
   margin-right: 0.2rem;
 
@@ -131,6 +122,39 @@
   top: 0.1rem;
   right: 0.2rem;
 }
+
+.gameOver__btn {
+  color: var(--main-black-color);
+  font-size: 4rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  background-color: #ca4246;
+
+  background-image: linear-gradient(
+    45deg,
+    #ca4246 16.666%,
+    #e16541 16.666%,
+    #e16541 33.333%,
+    #f18f43 33.333%,
+    #f18f43 50%,
+    #8b9862 50%,
+    #8b9862 66.666%,
+    #476098 66.666%,
+    #476098 83.333%,
+    #a7489b 83.333%
+  );
+
+  background-size: 100%;
+  background-repeat: repeat;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/*--------------------------------------*/
+/*  * ANIMATION */
+/*--------------------------------------*/
 
 @keyframes rainbow-text-simple-animation-rev {
   0% {

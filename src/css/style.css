@@ -25,19 +25,19 @@
   --turn-shadow: 1px 9px 27px 30px rgb(255, 238, 181);
   --turn: rgb(253, 249, 184);
   --skip: rgb(131, 0, 0);
+  --draw-btn-shadow: 1px 3px 3px rgb(73, 16, 16)
   --skip-shadow: 1px 2px 6px 2px rgb(146, 0, 0);
   --card-shadow: 0 0.18rem 0.2rem rgba(0, 0, 0, 0.521),
     0 0.18rem 0.2rem rgba(0, 0, 0, 0.24);
   --board-shadow: 0 2px 4px 2px rgba(27, 24, 24, 0.9);
   --discard--color: rgb(128, 60, 21);
   --font-color: rgb(211, 211, 211);
-  --red: rgb(230, 0, 0);
+  --red: rgb(218, 33, 0);
   --yellow: rgb(255, 208, 0);
   --green: rgb(7, 170, 56);
-  --blue: rgb(0, 35, 230);
+  --blue: rgb(42, 68, 218);
   --btn-color: rgb(221, 77, 51);
   --btn-disabled: rgb(156, 107, 99);
-  --table: rgb(48, 22, 22);
   --main-black-color: rgb(26, 26, 26);
 }
 

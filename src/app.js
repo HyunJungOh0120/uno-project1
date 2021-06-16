@@ -12,10 +12,10 @@ const specialCardsIcons = {
 };
 
 const colors = {
-  red: 'rgb(230,0,0)',
+  red: 'rgb(218,33,0)',
   yellow: 'rgb(255,208,0)',
   green: 'rgb(7,170,56)',
-  blue: 'rgb(0,35,230)',
+  blue: 'rgb(42,68,218)',
 };
 
 const cardInfo = {
@@ -313,9 +313,7 @@ const renderRefresh = (game) => {
 };
 
 const reverseArrow = () => {
-  $('.fa-angle-double-right').forEach((arrow) =>
-    arrow.css('transform', 'rotate(180deg)')
-  );
+  $('.fa-angle-double-right').css('transform', 'rotate(180deg)');
 };
 
 /////////////////////////////////////////////////////////////////
@@ -620,6 +618,7 @@ const gameOver = (game) => {
   console.log(`${game.winner} won!!!!!`);
   $('.gameOver__page').removeClass('none');
   $('#gameOver__winner').text(game.winner);
+  $('.gameOver__btn').on('click', () => $('.gameOver__page').addClass('none'));
 };
 
 const gameFlow = (game) => {
@@ -744,7 +743,7 @@ const chooseTurn = (e) => {
   setTimeout(() => {
     $('.choose__page').addClass('none');
     startGame(game);
-  }, DELAY * 1.5);
+  }, DELAY * 1.2);
 };
 
 /////////////////////////////////////////////////////////////////
@@ -757,7 +756,7 @@ const resetGame = (e) => {
   createDeck(board);
   // TODO
   $('.choose__page').removeClass('none');
-  $('.chooseTurn__btn').on('click', chooseTurn);
+  $('.chooseTurn__btn').off().on('click', chooseTurn);
 };
 
 /////////////////////////////////////////////////////////////////
@@ -766,9 +765,10 @@ const resetGame = (e) => {
 
 const main = () => {
   createDeck(board);
-  //$('.chooseTurn__btn').on('click', chooseTurn);
+  $('.chooseTurn__btn').on('click', chooseTurn);
   $('.reset__btn').on('click', resetGame);
   //startGame(game);
+  //gameOver(game);
 };
 
 $(main);
