@@ -102,11 +102,11 @@ const createDeck = (board) => {
 
 const game = {
   players: ['user', 'pc1', 'pc2'],
-  currPlayer: 'user',
-  currIndex: 0,
+  currPlayer: null,
+  currIndex: null,
   nextPlayer: null,
   nextIndex: 1,
-  currCard: null, //FIXME
+  currCard: null,
   winner: null,
   isSkipped: false,
   isBeginningSkip: true,
@@ -753,10 +753,30 @@ const chooseTurn = (e) => {
 const resetGame = (e) => {
   console.log('reset game 🂦');
   console.log(game);
+  game.currPlayer = null;
+  game.currIndex = null;
+  game.nextPlayer = null;
+  game.nextIndex = null;
+  game.currCard = null;
+  game.winner = null;
+  game.isSkipped = false;
+  game.isBeginningSkip = true;
+
+  playerHands.user = [];
+  playerHands.pc1 = [];
+  playerHands.pc2 = [];
+
+  playerScores.user = 0;
+  playerScores.pc1 = 0;
+  playerScores.pc2 = 0;
+
+  board.deck = [];
+  board.drawPile = [];
+  board.discardPile = [];
+
   createDeck(board);
-  // TODO
-  $('.choose__page').removeClass('none');
-  $('.chooseTurn__btn').off().on('click', chooseTurn);
+
+  location.reload();
 };
 
 /////////////////////////////////////////////////////////////////
