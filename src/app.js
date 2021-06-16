@@ -1,5 +1,5 @@
 'use strict';
-const DELAY = 2000;
+const DELAY = 2500;
 
 //////////////////////////////////////////////////////
 //// * ALL ABOUT CARDS 🐸
@@ -64,7 +64,6 @@ const create1Set = () => {
     cardInfo.face.forEach((face, i) => {
       const card = {
         color: color,
-        faceUp: false,
         value: cardInfo.value[i],
         face: face,
         color: color,
@@ -91,6 +90,12 @@ const createDeck = (board) => {
 
   set1.forEach((row) => row.forEach((card) => deck.push(card)));
   set2.forEach((row) => row.forEach((card) => deck.push(card)));
+
+  deck.forEach((card) => {
+    let i = 0;
+    card.id = i;
+    i++;
+  });
 
   // Total 108 cards
   board.deck = deck;
@@ -248,22 +253,21 @@ const renderHand = (player) => {
   for (let i = 0; i <= playerHands[player].length; i++) {
     // console.log($(`.card:nth-child(${i})`));
     if (playerHands[player].length > 13) {
-      $(`.${player}Hand .card:nth-child(${i})`)
-        .css('transform', `translateX(-${(i - 1) * 4}rem)`)
-        .css('z-index', i);
+      $(`.${player}Hand .card:nth-child(${i})`).css({
+        transform: `translateX(-${(i - 1) * 4}rem)`,
+        'z-index': i,
+      });
     } else {
-      $(`.${player}Hand .card:nth-child(${i})`)
-        .css('transform', `translateX(-${(i - 1) * 3}rem)`)
-        .css('z-index', i);
+      $(`.${player}Hand .card:nth-child(${i})`).css({
+        transform: `translateX(-${(i - 1) * 3}rem)`,
+        'z-index': i,
+      });
     }
   }
 
   if (player === 'user') {
     $('.userHand .card').addClass('userCard');
   }
-  $('.userCard').on('mouseover', () => {
-    $(this).css('transform', 'translateY(-1rem');
-  });
 };
 
 const renderDrawPile = (board) => {
@@ -383,7 +387,7 @@ const flipOneDrawPileToDiscardPile = () => {
   }
 };
 
-const checkPcHand = (whoes) => {
+const checkHandForMatching = (whoes) => {
   const matchedArray = [];
   const currCard = game.currCard;
   const hand = playerHands[whoes];
@@ -526,7 +530,7 @@ const pcTurn = () => {
   renderCurrPlayerTurnClass(game);
   console.log('💻');
   const currPlayer = game.currPlayer;
-  const matchingResult = checkPcHand(currPlayer);
+  const matchingResult = checkHandForMatching(currPlayer);
 
   //! WHEN PC HAS A CARD 🅾️
   if (matchingResult.length >= 1) {
@@ -568,6 +572,7 @@ const handlerUserCardClick = (e) => {
   const $chosenCard = $(e.currentTarget);
   if (!$chosenCard.hasClass('userCard')) return;
   const $cardIndex = $chosenCard.parent().children().index($chosenCard);
+
   const chosenCard = playerHands.user[$cardIndex];
 
   // if card is invalid , do nothing.
@@ -593,8 +598,6 @@ const handlerUserCardClick = (e) => {
 };
 
 const handlerDrawBtnClick = (e) => {
-  console.log(e.target);
-  console.log(e.currentTarget);
   console.log('USER DRAW CARD: ');
 
   // draw one card
@@ -718,23 +721,29 @@ const startGame = (game) => {
 /////////////////////////////////////////////////////////////////
 
 const chooseTurn = (e) => {
-  const userRandomCard = board.deck[getRandomNum(board.deck.length)];
-  const pc1RandomCard = board.deck[getRandomNum(board.deck.length)];
-  const pc2RandomCard = board.deck[getRandomNum(board.deck.length)];
+  const randomCards = game.players.map((player) => {
+    const temps = [];
+    // weird bugs => sometimes 'user'card isnt rendered and there are two pc1 or pc2
+    const randomNum = getRandomNum(board.deck.length);
+    let randomCard = board.deck[randomNum];
 
-  userRandomCard.player = 'user';
-  pc1RandomCard.player = 'pc1';
-  pc2RandomCard.player = 'pc2';
+    if (temps.indexOf(randomCard) === -1) {
+      temps.push(randomCard);
+    } else {
+      randomCard = board.deck[randomNum + 1];
+      temps.push(randomCard);
+    }
+    randomCard.player = player;
 
-  const randomCards = [userRandomCard, pc1RandomCard, pc2RandomCard];
+    return randomCard;
+  });
+  console.log(randomCards);
   //! 🎨 render
   randomCards.forEach((card) => {
     renderChooseTurn(card);
   });
 
-  const highest = randomCards.sort((a, b) => b.point - a.point)[0];
-
-  console.log(randomCards);
+  const highest = [...randomCards].sort((a, b) => b.point - a.point)[0];
 
   //! Remove btn
   $(e.target).addClass('none');
