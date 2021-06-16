@@ -307,28 +307,5 @@ TODO
 
 
 ⓵ if currCard === 'wildDraw4' ✅
-/\./g
-
-
 
 */
-
-const defangingIPAddress = (string) => {
-  return string.replace(/\./g, '[.]');
-};
-
-// console.log(defangingIPAddress('1.1.1.1'));
-// console.log(defangingIPAddress('255.100.50.0'));
-
-const runningSumof1dArray = (arr) => {
-  let start = 0;
-  return arr.map((num) => {
-    num += start;
-    start = num;
-    return num;
-  });
-};
-
-// console.log(runningSumof1dArray([1, 1, 1, 1, 1]));
-// console.log(runningSumof1dArray([3, 1, 2, 10, 1]));
-// console.log(runningSumof1dArray([1, 2, 3, 4]));
