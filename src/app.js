@@ -1,5 +1,5 @@
 'use strict';
-const DELAY = 3000;
+const DELAY = 2000;
 
 //////////////////////////////////////////////////////
 //// * ALL ABOUT CARDS 🐸
@@ -247,10 +247,15 @@ const renderHand = (player) => {
 
   for (let i = 0; i <= playerHands[player].length; i++) {
     // console.log($(`.card:nth-child(${i})`));
-
-    $(`.${player}Hand .card:nth-child(${i})`)
-      .css('transform', `translateX(-${(i - 1) * 3}rem)`)
-      .css('z-index', i);
+    if (playerHands[player].length > 13) {
+      $(`.${player}Hand .card:nth-child(${i})`)
+        .css('transform', `translateX(-${(i - 1) * 4}rem)`)
+        .css('z-index', i);
+    } else {
+      $(`.${player}Hand .card:nth-child(${i})`)
+        .css('transform', `translateX(-${(i - 1) * 3}rem)`)
+        .css('z-index', i);
+    }
   }
 
   if (player === 'user') {
@@ -705,7 +710,7 @@ const startGame = (game) => {
 
   setTimeout(() => {
     gameFlow(game);
-  }, DELAY);
+  }, DELAY * 1.5);
 };
 
 /////////////////////////////////////////////////////////////////
@@ -722,12 +727,15 @@ const chooseTurn = (e) => {
   pc2RandomCard.player = 'pc2';
 
   const randomCards = [userRandomCard, pc1RandomCard, pc2RandomCard];
-  const highest = randomCards.sort((a, b) => b.point - a.point)[0];
-
   //! 🎨 render
   randomCards.forEach((card) => {
     renderChooseTurn(card);
   });
+
+  const highest = randomCards.sort((a, b) => b.point - a.point)[0];
+
+  console.log(randomCards);
+
   //! Remove btn
   $(e.target).addClass('none');
   $('.choose__msg').removeClass('none')
@@ -743,7 +751,7 @@ const chooseTurn = (e) => {
   setTimeout(() => {
     $('.choose__page').addClass('none');
     startGame(game);
-  }, DELAY * 1.2);
+  }, DELAY);
 };
 
 /////////////////////////////////////////////////////////////////
