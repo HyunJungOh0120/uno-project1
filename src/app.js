@@ -226,7 +226,7 @@ const getPcCardTemplate = () => {
 };
 
 /////////////////////////////////////////////////////////////////
-// * RENDER CARDS 🎨
+// * ALL ABOUT RENDER  🎨
 /////////////////////////////////////////////////////////////////
 
 const renderChooseTurn = (card) => {
@@ -236,7 +236,6 @@ const renderChooseTurn = (card) => {
 
   $('.chooseBox .card').addClass('discard__card');
 };
-
 // render ONE player's hand.
 const renderHand = (player) => {
   const template = playerHands[player]
@@ -312,6 +311,13 @@ const renderRefresh = (game) => {
     renderHand(player);
   }
 };
+
+const reverseArrow = () => {
+  $('.fa-angle-double-right').forEach((arrow) =>
+    arrow.css('transform', 'rotate(180deg)')
+  );
+};
+
 /////////////////////////////////////////////////////////////////
 // * GAME FUNCTIONS 🦊
 /////////////////////////////////////////////////////////////////
@@ -414,7 +420,7 @@ const showColorChangeModal = (game) => {
   return $('.colorBox').on('click', getNewColor);
 };
 
-const updateScore = (game) => {
+const updateScore = (game, chosenCard) => {
   playerScores[game.currPlayer] += chosenCard.point;
 };
 /////////////////////////////////////////////////////////////////
@@ -443,6 +449,7 @@ const specialCardsMethod = {
     const reversedPlayers = game.players.reverse();
     game.players = reversedPlayers;
     getCurrIndex(game);
+    reverseArrow();
   },
   wild(game) {
     if (game.currPlayer !== 'user') {
@@ -529,7 +536,7 @@ const pcTurn = () => {
     }
     // change the current card
     game.currCard = chosenCard;
-    updateScore(game);
+    updateScore(game, chosenCard);
 
     //! remove chosencard from hand & move to discardpile
     const cardIndexInHand = playerHands[currPlayer].indexOf(chosenCard);
@@ -570,7 +577,7 @@ const handlerUserCardClick = (e) => {
   // if card is valid
   // change the curr card
   game.currCard = chosenCard;
-  updateScore(game);
+  updateScore(game, chosenCard);
 
   // take the chosen card from userhand and move to discardPile.
   const splicedCard = playerHands.user.splice($cardIndex, 1);

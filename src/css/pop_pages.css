@@ -92,8 +92,9 @@
   color: grey;
   background-color: black;
   padding: 1rem;
+  margin-right: 0.2rem;
+
   position: absolute;
-  z-index: 1;
-  right: 0;
-  top: 0;
+  top: 0.1rem;
+  right: 0.2rem;
 }
