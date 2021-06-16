@@ -63,7 +63,6 @@ button {
 button:active {
   transform: scale(0.9);
 }
-
 /* //////////////////////////////////////////////////////////// */
 /* *  CHOOSE TURN PAGE  */
 /* //////////////////////////////////////////////////////////// */
@@ -331,10 +330,10 @@ button:active {
 }
 
 .userCard {
-  width: 8rem;
-  min-width: 8rem;
-  height: 11rem;
-  min-height: 11rem;
+  width: 7rem;
+  min-width: 7rem;
+  height: 9rem;
+  min-height: 9rem;
   cursor: pointer;
   transition: all 0.4s;
   flex-wrap: nowrap;
@@ -468,7 +467,6 @@ button:active {
 .skip::after {
   content: 'skip';
   background: rgba(212, 212, 212, 0.637);
-
   background-position: center;
   background-size: cover;
   position: absolute;
@@ -483,7 +481,9 @@ button:active {
   align-items: center;
   font-size: 4rem;
   font-family: 'Cairo', sans-serif;
+  font-weight: bold;
   z-index: 20;
+  overflow: hidden;
 }
 
 .faceDown {
@@ -494,23 +494,23 @@ button:active {
 /*  * ANIMATION*/
 /* //////////////////////////////////////////// */
 
-@-webkit-keyframes flip-vertical-right {
+@-webkit-keyframes slide-left {
   0% {
-    -webkit-transform: rotateY(0);
-    transform: rotateY(0);
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
   }
   100% {
-    -webkit-transform: rotateY(180deg);
-    transform: rotateY(180deg);
+    -webkit-transform: translateX(-100px);
+    transform: translateX(-100px);
   }
 }
-@keyframes flip-vertical-right {
+@keyframes slide-left {
   0% {
-    -webkit-transform: rotateY(0);
-    transform: rotateY(0);
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
   }
   100% {
-    -webkit-transform: rotateY(180deg);
-    transform: rotateY(180deg);
+    -webkit-transform: translateX(-100px);
+    transform: translateX(-100px);
   }
 }

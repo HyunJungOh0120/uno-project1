@@ -1,6 +1,11 @@
 'use strict';
 const DELAY = 3000;
-const specialCards = {
+
+//////////////////////////////////////////////////////
+//// * ALL ABOUT CARDS 🐸
+//////////////////////////////////////////////////////
+
+const specialCardsIcons = {
   skip: `<i class="far fa-times-circle fa-xs"></i>`,
   reverse: `<i class="fas fa-exchange-alt fa-xs"></i>`,
   draw2: `<i class="fas fa-plus fa-xs"></i>2`,
@@ -43,9 +48,9 @@ const cardInfo = {
     7,
     8,
     9,
-    specialCards.skip,
-    specialCards.reverse,
-    specialCards.draw2,
+    specialCardsIcons.skip,
+    specialCardsIcons.reverse,
+    specialCardsIcons.draw2,
     'wild',
     'wildDraw4',
   ],
@@ -312,10 +317,10 @@ const deal7CardsToEachPlayers = () => {
       playerHands[player].push(card);
     }
   }
-  //! 🎨 render : now i have each players name : user, pc1, pc2
-  game.players.forEach((player) => {
-    renderHand(player);
-  });
+  // //! 🎨 render : now i have each players name : user, pc1, pc2
+  // game.players.forEach((player) => {
+  //   renderHand(player);
+  // });
 };
 
 const remainingCardsToDrawPile = () => {
@@ -331,7 +336,7 @@ const drawOneCard = (pushTo) => {
 
   playerHands[pushTo].push(drawCard);
 };
-// TODO
+
 const flipOneDrawPileToDiscardPile = () => {
   const flippedCard = board.drawPile.pop();
   board.discardPile.push(flippedCard);
@@ -366,7 +371,6 @@ const checkPcHand = (whoes) => {
   return matchedArray;
 };
 
-// TODO
 const getNewColor = (e) => {
   $('.changeColorPage').addClass('none');
   const $chosenColor = $(e.target).css('background-color').replace(/\s/g, '');
@@ -465,8 +469,6 @@ const specialCardsMethod = {
 };
 
 const activateSpecialCards = (game) => {
-  // SKIP, DRAW2, WILD4   HAS CHANGEPLAYER
-  // REVERSE, WILD        NO  CHANGEPLAYER, no gameflow
   const cardValue = game.currCard.value;
 
   if (cardValue !== 'wild' && cardValue !== 'wildDraw4') {
@@ -505,7 +507,6 @@ const pcTurn = () => {
   const matchingResult = checkPcHand(currPlayer);
 
   //! WHEN PC HAS A CARD 🅾️
-  //* when there are results or is a result
   if (matchingResult.length >= 1) {
     let chosenCard;
     if (matchingResult.length === 1) {
@@ -641,15 +642,13 @@ const gameFlow = (game) => {
 // * GAME START!! 🦊
 /////////////////////////////////////////////////////////////////
 
-const checkBeginningCard = () => {
+const checkBeginningCard = (game) => {
   if (typeof game.currCard.value !== 'number') {
     const specialCard = game.currCard.value;
 
     if (specialCard === 'skip') {
       console.log(`❌ ${game.currPlayer} skipped!`);
-      game.isSkipped = true;
-      toggleCurrPlayerSkipClass(game);
-      changePlayer(game);
+      specialCardsMethod.skip(game);
     }
     if (specialCard === 'reverse') {
       specialCardsMethod.reverse(game);
@@ -661,7 +660,7 @@ const checkBeginningCard = () => {
   }
 };
 
-const startGame = () => {
+const startGame = (game) => {
   console.log('game start!');
   //* Doing all jobs related to Board deck! Cards!
   shuffleDeck();
@@ -675,17 +674,14 @@ const startGame = () => {
     flipOneDrawPileToDiscardPile();
   }
 
-  //! render turn 🎨
-  // renderCurrPlayerTurnClass(game);
-
   //* Check beginning card!
-  checkBeginningCard();
-  //! render currplayer hand 🎨
-  renderHand(game.currPlayer);
+  checkBeginningCard(game);
+
+  renderRefresh(game);
 
   setTimeout(() => {
     gameFlow(game);
-  }, 2000);
+  }, DELAY);
 };
 
 /////////////////////////////////////////////////////////////////
@@ -722,8 +718,21 @@ const chooseTurn = (e) => {
   //! GAME START!!
   setTimeout(() => {
     $('.choose__page').addClass('none');
-    startGame();
-  }, 8000);
+    startGame(game);
+  }, DELAY * 2);
+};
+
+/////////////////////////////////////////////////////////////////
+// * RESET GAME 🔥
+/////////////////////////////////////////////////////////////////
+
+const resetGame = (e) => {
+  console.log('reset game 🂦');
+  console.log(game);
+  createDeck(board);
+  // TODO
+  $('.choose__page').removeClass('none');
+  $('.chooseTurn__btn').on('click', chooseTurn);
 };
 
 /////////////////////////////////////////////////////////////////
@@ -732,8 +741,9 @@ const chooseTurn = (e) => {
 
 const main = () => {
   createDeck(board);
-  //$('.chooseTurn__btn').on('click', chooseTurn);
-  startGame();
+  $('.chooseTurn__btn').on('click', chooseTurn);
+  $('.reset__btn').on('click', resetGame);
+  //startGame(game);
 };
 
 $(main);
