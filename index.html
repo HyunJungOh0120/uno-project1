@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="src/css/style.css" />
   </head>
   <body>
-    <button class="reset__btn">RESET</button>
+    <nav>user<button class="reset__btn">RESET</button></nav>
+
     <div class="pop-up choose__page none">
       <button class="chooseTurn__btn">PICK A CARD</button>
       <p class="choose__msg none">
@@ -65,6 +66,11 @@
     </div>
 
     <main class="board">
+      <div class="scores">
+        <p>PC1: <span class="score" id="pc1Score">0</span></p>
+        <p>USER: <span class="score" id="userScore">0</span></p>
+        <p>PC2: <span class="score" id="pc2Score">0</span></p>
+      </div>
       <section class="side">
         <div class="hand pc1Hand">
           <!-- <div class="card">

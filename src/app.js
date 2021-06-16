@@ -298,11 +298,20 @@ const toggleCurrPlayerSkipClass = (game) => {
   $(`.${game.currPlayer}Hand`).toggleClass('skip');
 };
 
-const renderDrawAndDiscard = () => {
-  renderDrawPile(board);
-  renderDiscardPile(game);
+const renderScores = (playerScores) => {
+  $('#pc1Score').text(playerScores.pc1);
+  $('#userScore').text(playerScores.user);
+  $('#pc2Score').text(playerScores.pc2);
 };
 
+const renderRefresh = (game) => {
+  renderDrawPile(board);
+  renderDiscardPile(game);
+  renderScores(playerScores);
+  for (const player in playerHands) {
+    renderHand(player);
+  }
+};
 /////////////////////////////////////////////////////////////////
 // * GAME FUNCTIONS 🦊
 /////////////////////////////////////////////////////////////////
@@ -405,15 +414,9 @@ const showColorChangeModal = (game) => {
   return $('.colorBox').on('click', getNewColor);
 };
 
-const renderRefresh = (game) => {
-  renderDiscardPile(game);
-  renderDrawAndDiscard(game);
-
-  for (const player in playerHands) {
-    renderHand(player);
-  }
+const updateScore = (game) => {
+  playerScores[game.currPlayer] += chosenCard.point;
 };
-
 /////////////////////////////////////////////////////////////////
 // * SPECIAL CARDS!! 🐥
 /////////////////////////////////////////////////////////////////
@@ -526,6 +529,7 @@ const pcTurn = () => {
     }
     // change the current card
     game.currCard = chosenCard;
+    updateScore(game);
 
     //! remove chosencard from hand & move to discardpile
     const cardIndexInHand = playerHands[currPlayer].indexOf(chosenCard);
@@ -566,6 +570,8 @@ const handlerUserCardClick = (e) => {
   // if card is valid
   // change the curr card
   game.currCard = chosenCard;
+  updateScore(game);
+
   // take the chosen card from userhand and move to discardPile.
   const splicedCard = playerHands.user.splice($cardIndex, 1);
   board.discardPile.push(splicedCard);
@@ -602,6 +608,7 @@ const userTurn = () => {
 /////////////////////////////////////////////////////////////////
 // * GAME FLOW!! 🦊
 /////////////////////////////////////////////////////////////////
+
 const gameOver = (game) => {
   console.log(`${game.winner} won!!!!!`);
 };

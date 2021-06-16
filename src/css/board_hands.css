@@ -18,6 +18,23 @@
   transform: rotateX(10deg);
 }
 
+.scores {
+  position: absolute;
+  top: 0;
+
+  font-size: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  color: rgb(61, 73, 61);
+}
+
+.score {
+  color: rgb(12, 49, 61);
+}
+
 .side {
   width: 12%;
   position: relative;

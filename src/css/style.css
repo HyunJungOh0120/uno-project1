@@ -85,6 +85,15 @@ button:active {
   transform: scale(0.9);
 }
 
+nav {
+  background-color: black;
+  width: 100%;
+  height: 5rem;
+  position: absolute;
+  top: 0;
+  color: var(--main-white);
+}
+
 /*--------------------------------------*/
 /*  * ANIMATION*/
 /*--------------------------------------*/
