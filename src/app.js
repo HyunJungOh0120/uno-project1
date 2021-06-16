@@ -618,10 +618,11 @@ const userTurn = () => {
 
 const gameOver = (game) => {
   console.log(`${game.winner} won!!!!!`);
+  $('.gameOver__page').removeClass('none');
+  $('#gameOver__winner').text(game.winner);
 };
 
 const gameFlow = (game) => {
-  // TODO 6월 15일
   //* game end
   for (const player in playerHands) {
     if (playerHands[player].length === 0) {
@@ -767,7 +768,7 @@ const main = () => {
   createDeck(board);
   //$('.chooseTurn__btn').on('click', chooseTurn);
   $('.reset__btn').on('click', resetGame);
-  startGame(game);
+  //startGame(game);
 };
 
 $(main);
