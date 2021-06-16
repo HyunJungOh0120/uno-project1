@@ -41,6 +41,10 @@ body {
   perspective: 400px;
   background: linear-gradient(#eeeeee, #747474);
   color: var(--main-black-color);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 section {
