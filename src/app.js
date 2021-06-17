@@ -91,12 +91,6 @@ const createDeck = (board) => {
   set1.forEach((row) => row.forEach((card) => deck.push(card)));
   set2.forEach((row) => row.forEach((card) => deck.push(card)));
 
-  deck.forEach((card) => {
-    let i = 0;
-    card.id = i;
-    i++;
-  });
-
   // Total 108 cards
   board.deck = deck;
 };
@@ -139,6 +133,24 @@ const board = {
 // * GAME PLAYER FLOW 🦄
 ///////////////////////////////////////////////////////////////
 const getRandomNum = (limit) => Math.floor(Math.random() * limit);
+
+const getthreeDifferentRandomNum = (limit) => {
+  const randomNums = [];
+  for (let i = 0; i < limit; i++) {
+    const num = getRandomNum(limit);
+    if (!randomNums) {
+      randomNums.push(num);
+    }
+    if (randomNums.indexOf(num) === -1) {
+      randomNums.push(num);
+    }
+    if (randomNums.length === 3) {
+      break;
+    }
+  }
+  return randomNums;
+};
+
 const getCurrIndex = (game) => {
   game.currIndex = game.players.indexOf(game.currPlayer);
 };
@@ -721,23 +733,13 @@ const startGame = (game) => {
 /////////////////////////////////////////////////////////////////
 
 const chooseTurn = (e) => {
-  const randomCards = game.players.map((player) => {
-    const temps = [];
-    // weird bugs => sometimes 'user'card isnt rendered and there are two pc1 or pc2
-    const randomNum = getRandomNum(board.deck.length);
-    let randomCard = board.deck[randomNum];
+  const random3Nums = getthreeDifferentRandomNum(board.deck.length);
+  const randomCards = random3Nums.map((num) => board.deck[num]);
 
-    if (temps.indexOf(randomCard) === -1) {
-      temps.push(randomCard);
-    } else {
-      randomCard = board.deck[randomNum + 1];
-      temps.push(randomCard);
-    }
-    randomCard.player = player;
-
-    return randomCard;
+  game.players.forEach((player, index) => {
+    randomCards[index].player = player;
   });
-  console.log(randomCards);
+
   //! 🎨 render
   randomCards.forEach((card) => {
     renderChooseTurn(card);

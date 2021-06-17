@@ -308,4 +308,59 @@ TODO
 
 ⓵ if currCard === 'wildDraw4' ✅
 
+
 */
+const computerChoice = ['a', 'b', 'c', 'd'];
+
+const print = (item) => {
+  if (choice) {
+    console.log(item + ': there is choice');
+  }
+  console.log('there isnt choice');
+
+  setTimeout(() => {
+    console.log('css part');
+  }, 2000);
+};
+
+const timeout = (func, time) => {
+  setTimeout(func, 3000 * time);
+};
+
+const generatorAudioVisual = () => {
+  computerChoice.forEach((item, index) => {
+    timeout(() => {
+      print(item);
+    }, index);
+  });
+};
+
+// generatorAudioVisual();
+
+// clearTimeout(timeout);
+// console.log('cleared');
+
+//! get three different random number
+
+const getNum = (limit) => {
+  return Math.floor(Math.random() * limit);
+};
+
+const threeDifferentRandomNum = (limit) => {
+  const randomNums = [];
+  for (let i = 0; i < limit; i++) {
+    const num = getNum(limit);
+    if (!randomNums) {
+      randomNums.push(num);
+    }
+    if (randomNums.indexOf(num) === -1) {
+      randomNums.push(num);
+    }
+    if (randomNums.length === 3) {
+      break;
+    }
+  }
+  return randomNums;
+};
+
+console.log(threeDifferentRandomNum(10));
