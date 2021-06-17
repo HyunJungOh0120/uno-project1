@@ -642,6 +642,8 @@ const gameOver = (game) => {
 };
 
 const gameFlow = (game) => {
+  const audio = document.querySelector('#turnSound');
+  audio.play();
   //* game end
   for (const player in playerHands) {
     if (playerHands[player].length === 0) {
@@ -725,7 +727,7 @@ const startGame = (game) => {
 
   setTimeout(() => {
     gameFlow(game);
-  }, DELAY * 1.5);
+  }, DELAY * 0.8);
 };
 
 /////////////////////////////////////////////////////////////////
