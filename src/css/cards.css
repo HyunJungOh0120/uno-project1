@@ -113,3 +113,25 @@
 .discard__card .card__value--main {
   font-size: 6.5rem;
 }
+
+.match {
+  animation: blinking 0.8s 5;
+}
+
+@keyframes blinking {
+  0% {
+    box-shadow: none;
+  }
+  49% {
+    box-shadow: 0 0 6px 5px rgb(255, 245, 105);
+  }
+  50% {
+    box-shadow: 0 0 6px 5px rgb(255, 245, 105);
+  }
+  99% {
+    box-shadow: 0 0 6px 5px rgb(255, 245, 105);
+  }
+  100% {
+    box-shadow: none;
+  }
+}

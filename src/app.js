@@ -101,8 +101,8 @@ const createDeck = (board) => {
 
 const game = {
   players: ['user', 'pc1', 'pc2'],
-  currPlayer: null,
-  currIndex: null,
+  currPlayer: 'user',
+  currIndex: 0,
   nextPlayer: null,
   nextIndex: 1,
   currCard: null,
@@ -622,12 +622,37 @@ const handlerDrawBtnClick = (e) => {
   return gameFlow(game);
 };
 
+// TODO
+const showHint = () => {
+  if (checkHandForMatching('user')) {
+    const matched = checkHandForMatching('user');
+    console.log('cardobj : ', matched);
+
+    const matchedIndex = [];
+    playerHands.user.forEach((handCard, i) => {
+      if (matched.indexOf(handCard) !== -1) {
+        matchedIndex.push(i);
+      }
+    });
+    console.log(matchedIndex); // [0, 2]
+    matchedIndex.forEach((i) => {
+      console.log($('.userCard').eq(i));
+      $('.userCard').eq(i).addClass('match');
+    });
+  }
+  if (checkHandForMatching('user').length === 0) {
+    $('.draw__btn').addClass('match');
+  }
+};
+
 const userTurn = () => {
   if (game.currPlayer !== 'user') return;
+
+  setTimeout(showHint, DELAY / 2);
+
   console.log('🧝‍♀️ ');
   $('.userCard').on('click', handlerUserCardClick);
   $('.draw__btn').off().on('click', handlerDrawBtnClick);
-  //$('main').on('click', mainClick);
 };
 
 /////////////////////////////////////////////////////////////////
@@ -642,8 +667,13 @@ const gameOver = (game) => {
 };
 
 const gameFlow = (game) => {
+  // audio
   const audio = document.querySelector('#turnSound');
   audio.play();
+
+  //
+  $('.userCard').removeClass('match');
+
   //* game end
   for (const player in playerHands) {
     if (playerHands[player].length === 0) {
@@ -806,10 +836,9 @@ const resetGame = (e) => {
 
 const main = () => {
   createDeck(board);
-  $('.chooseTurn__btn').on('click', chooseTurn);
+  //$('.chooseTurn__btn').on('click', chooseTurn);
   $('.reset__btn').on('click', resetGame);
-  //startGame(game);
-  //gameOver(game);
+  startGame(game);
 };
 
 $(main);
