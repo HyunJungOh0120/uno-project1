@@ -8,15 +8,11 @@
 
 ## 🌼 Introduction
 
----
-
 This is a turn based game with **2 AI** and **1 player**, which automatically changing turns. I chose this because I wanted to be able to add more advanced game features which could only be offered with at least 3 players.
 
 <br/><br/>
 
 ## 🚀 Features
-
----
 
 - There are 3 players, 2 AI players and you (user).
 - The game will start by picking up the random cards each, and the player who has the highst number of card will be the first to play.
@@ -35,8 +31,6 @@ This is a turn based game with **2 AI** and **1 player**, which automatically ch
 
 ## 🎨 Visuals
 
----
-
 **Game start screen :**
 
 ![Uno Choosing Turn Page](src/game_features/uno-choose.gif)
@@ -52,8 +46,6 @@ This is a turn based game with **2 AI** and **1 player**, which automatically ch
 <br/><br/>
 
 ## Challenging part
-
----
 
 Before wrting codes, I started to write down what to do and planned what methods I'm gonna use. The first challenge was :
 
@@ -72,8 +64,6 @@ Before wrting codes, I started to write down what to do and planned what methods
 
 ## Future updates
 
----
-
 - [x] Show hints : If user didn't play for 3 seconds, some hints will show up.
 - [ ] Add special card which draws 1 card to each side players (left & right).
 - [ ] Add options to let user choose the card color on game start page.
@@ -81,8 +71,6 @@ Before wrting codes, I started to write down what to do and planned what methods
 <br></br>
 
 ## 💻 Technologies
-
----
 
 Project is created with:
 
@@ -95,15 +83,11 @@ Project is created with:
 
 ## Launch
 
----
-
 [🏆 Play here!](https://uno-project1.vercel.app/)
 
 <br></br>
 
 ## Author
-
----
 
 Hello, I'm Oh Hyun Jung (Agnes) from South Korea 🇰🇷 based in Singapore 🇸🇬.
 
@@ -113,7 +97,5 @@ Hello, I'm Oh Hyun Jung (Agnes) from South Korea 🇰🇷 based in Singapore �
 <br></br>
 
 ## Contribution
-
----
 
 Sound effects obtained from <https://www.zapsplat.com>
