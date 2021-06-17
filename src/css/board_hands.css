@@ -4,7 +4,7 @@
 .board {
   position: relative;
 
-  min-width: 80rem;
+  min-width: 100rem;
   background: var(--board-color);
   height: 100%;
   padding: 1rem 1.3rem;

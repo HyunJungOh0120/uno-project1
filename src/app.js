@@ -494,9 +494,11 @@ const specialCardsMethod = {
 
       game.currCard.color = newColor;
       repeat(4, drawOneCard, nextPlayer);
-      renderRefresh(game);
-      changePlayer(game);
-      return gameFlow(game);
+      setTimeout(() => {
+        renderRefresh(game);
+        changePlayer(game);
+        return gameFlow(game);
+      }, DELAY / 2);
     }
     if (game.currPlayer === 'user') {
       repeat(4, drawOneCard, nextPlayer);
@@ -622,7 +624,6 @@ const handlerDrawBtnClick = (e) => {
   return gameFlow(game);
 };
 
-// TODO
 const showHint = () => {
   if (checkHandForMatching('user')) {
     const matched = checkHandForMatching('user');
@@ -837,9 +838,9 @@ const resetGame = (e) => {
 
 const main = () => {
   createDeck(board);
-  //$('.chooseTurn__btn').on('click', chooseTurn);
+  $('.chooseTurn__btn').on('click', chooseTurn);
   $('.reset__btn').on('click', resetGame);
-  startGame(game);
+  //startGame(game);
 };
 
 $(main);

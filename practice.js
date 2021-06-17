@@ -363,4 +363,7 @@ const threeDifferentRandomNum = (limit) => {
   return randomNums;
 };
 
-console.log(threeDifferentRandomNum(10));
+// console.log(threeDifferentRandomNum(10));
+
+const array1 = [{ name: 'a' }, { name: 'a' }];
+console.log(array1[0] === array1[1]);
