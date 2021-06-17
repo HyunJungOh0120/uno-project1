@@ -39,15 +39,15 @@ This is a turn based game with **2 AI** and **1 player**, which automatically ch
 
 **Game start screen :**
 
-<!-- ![Uno Choosing Turn Page](src/game_features/uno-choose.gif) -->
+![Uno Choosing Turn Page](src/game_features/uno-choose.gif)
 
 **Game flow :**
 
-<!-- ![Uno user playing](src/game_features/uno-play.gif) -->
+![Uno user playing](src/game_features/uno-play.gif)
 
 **Wild card - Changing the current card's color :**
 
-<!-- ![Uno user playing](src/game_features/uno-wild.gif) -->
+![Uno user playing](src/game_features/uno-wild.gif)
 
 <br/><br/>
 
