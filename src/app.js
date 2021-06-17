@@ -334,7 +334,7 @@ const renderRefresh = (game) => {
 };
 
 const reverseArrow = () => {
-  $('.fa-angle-double-right').css('transform', 'rotate(180deg)');
+  $('.reverse-arrow i').css('transform', 'rotate(180deg)');
 };
 
 /////////////////////////////////////////////////////////////////
@@ -671,8 +671,9 @@ const gameFlow = (game) => {
   const audio = document.querySelector('#turnSound');
   audio.play();
 
-  //
+  // remove hint on css
   $('.userCard').removeClass('match');
+  $('.draw__btn').removeClass('match');
 
   //* game end
   for (const player in playerHands) {

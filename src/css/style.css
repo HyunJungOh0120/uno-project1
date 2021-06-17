@@ -98,12 +98,7 @@ nav {
   align-items: center;
 }
 
-nav i {
-  font-size: 2rem;
-  margin-right: 1rem;
-  color: rgb(230, 0, 0);
-  /* transform: rotate(180deg); */
-}
+
 
 /*--------------------------------------*/
 /*  * ANIMATION*/

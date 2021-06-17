@@ -46,6 +46,21 @@
   width: 75%;
   width: 47rem;
   margin: 1.2rem;
+  position: relative;
+}
+
+.reverse-arrow {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  z-index: 300;
+}
+
+.reverse-arrow i {
+  font-size: 2rem;
+  margin-right: 1rem;
+  color: rgb(255, 255, 255);
+  /* transform: rotate(180deg); */
 }
 
 .piles {
