@@ -51,7 +51,8 @@ Before wrting codes, I started to write down what to do and planned which method
 
 - Setting up the data object
   - In the game, I need three elements : Board, Players, Game status.
-  - It was challenging to connect all three parts, so I ended up making Board object, Game status object, Players hands object
+  - It was challenging to connect all three parts, so I ended up making Board object, Game status object, Players hands object.
+  - However, game status object has repeated info(data) to players hands object. ( e.g. Game status: players name, players index || Players hands: players name, each players' hands). This caused unnecessary, however, crucial codes(variables or functions) over the game. Must be improved in the future.
 - Special Cards Methods
   - There are only 5 special cards, but since there are AI players and user, I had to make 2 different ways (functions) for each methods.
 - Game flow
